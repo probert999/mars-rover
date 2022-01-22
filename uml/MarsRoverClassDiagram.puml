@@ -1,0 +1,75 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface Navigator {
+    + setXYPosition(xCoordinate : int, yCoordinate : int) : boolean
+    + getLocation() : String
+    + getHeading() : String
+    + spin(heading : SpinDirection) : Heading
+    + move() : void
+}
+
+class Rover extends Navigator  {
+  - String roverId
+  - Plateau plateau
+  - int xPosition
+  - int yPosition
+  - Heading currentHeading
+}
+
+interface PlateauInterface  {
+   + isValidCoordinate(xCoordinate : int, yCoordinate : int) : boolean
+}
+
+abstract class Plateau extends PlateauInterface {
+  - String plateauId
+  + getPlateauId() : String
+}
+
+class QuadPlateau implements Plateau {
+  - int xMaximum
+  - int yMaximum
+
+   + QuadPlateau(plateauId : String, xMaximum : int, yMaximum : int)
+
+}
+
+
+enum Heading
+{
+NORTH
+EAST
+SOUTH
+WEST
+}
+
+enum Direction
+{
+LEFT
+RIGHT
+}
+
+class NASACapcom {
+  - List<Rover> roverList;
+  - List<Plateau> plateauList;
+
+  - createPlateau(plateauId : String, xMaximum : int, yMaximum : int) : void
+  - createRover(roverId : String, plateau : Plateau, xCoordinate : int, yCoordinate : int, heading : char) : void
+  - getRover() : Rover
+  - getRover(roverId : String) : Rover
+  - getPlateau(plateauId : String) : Plateau
+  - getRoverStatus(roverId : String) : String
+  - processSequence(roverId : String, sequence : String) : boolean
+
+  + processInstruction(instruction : String) : boolean
+  + getStatusReport() : String
+  + isValidMove(plateua : Plateau, xCoordinate : int, yCoordinate : int) : boolean
+}
+
+NASACapcom - Plateau
+Rover - NASACapcom
+
+
+Heading -[hidden] Navigator
+Heading -[hidden] Direction
+@enduml
