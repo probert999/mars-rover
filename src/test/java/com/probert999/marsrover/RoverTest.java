@@ -1,10 +1,12 @@
 package com.probert999.marsrover;
 
 import com.probert999.marsrover.app.model.HeadingEnum;
+import com.probert999.marsrover.app.model.QuadPlateau;
 import com.probert999.marsrover.app.model.SurfaceRover;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoverTest {
 
@@ -37,6 +39,21 @@ public class RoverTest {
         assertEquals(false, testRover.setPosition(0,-1, HeadingEnum.North));
     }
 
+    @Test
+    public void shouldBeAbleToGetLocation()
+    {
+        SurfaceRover testRover = new SurfaceRover("testRover1");
+        testRover.setPosition(0,0, HeadingEnum.North);
+        assertEquals("0 0 N", testRover.getLocation());
+    }
+
+    @Test
+    public void shouldNotBeAbleToGetLocationIfItHasNotBeenSet()
+    {
+        SurfaceRover testRover = new SurfaceRover("testRover1");
+        assertThrows(
+                IllegalStateException.class, () -> testRover.getLocation());
+    }
 
 
 }

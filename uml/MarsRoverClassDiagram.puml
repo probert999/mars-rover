@@ -4,7 +4,6 @@ skinparam classAttributeIconSize 0
 interface Navigator {
     + setPosition(xCoordinate : int, yCoordinate : int, Heading heading) : boolean
     + getLocation() : String
-    + getHeading() : String
     + spin(heading : SpinDirection) : Heading
     + move() : void
 }

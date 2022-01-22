@@ -7,5 +7,4 @@ public class SurfaceRover extends Rover {
         this.roverId = roverId;
     }
 
-
 }

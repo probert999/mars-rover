@@ -1,10 +1,12 @@
 package com.probert999.marsrover.app.model;
 
+import java.text.MessageFormat;
+
 public abstract class Rover implements Navigator {
 
   protected String roverId;
-  protected int xCoordinate;
-  protected int yCoordinate;
+  protected int xPosition;
+  protected int yPosition;
   protected HeadingEnum currentHeading;
 
   public String getRoverId() {
@@ -16,12 +18,21 @@ public abstract class Rover implements Navigator {
     boolean positionSet = false;
     if (xCoordinate >=0 && yCoordinate >= 0)
     {
-      this.xCoordinate = xCoordinate;
-      this.yCoordinate = yCoordinate;
+      this.xPosition = xCoordinate;
+      this.yPosition = yCoordinate;
       this.currentHeading = heading;
       positionSet = true;
     }
     return positionSet;
+  }
+
+  public String getLocation()
+  {
+    if (currentHeading == null)
+    {
+      throw new IllegalStateException("Position has not yet been set");
+    }
+    return MessageFormat.format("{0} {1} {2}",xPosition, yPosition, currentHeading.toString().charAt(0));
   }
 
 }
