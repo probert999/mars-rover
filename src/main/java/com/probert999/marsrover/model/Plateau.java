@@ -1,4 +1,4 @@
-package com.probert999.marsrover.app.model;
+package com.probert999.marsrover.model;
 
 abstract public class Plateau implements PlateauInterface {
 

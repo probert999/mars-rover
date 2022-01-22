@@ -1,6 +1,6 @@
 package com.probert999.marsrover;
 
-import com.probert999.marsrover.app.model.QuadPlateau;
+import com.probert999.marsrover.model.QuadPlateau;
 import org.junit.jupiter.api.Test;
 
 

@@ -4,13 +4,12 @@ skinparam classAttributeIconSize 0
 interface Navigator {
     + setPosition(xCoordinate : int, yCoordinate : int, Heading heading) : boolean
     + getLocation() : String
-    + spin(heading : SpinDirection) : Heading
+    + spin(heading : SpinDirection) : void
     + move() : void
 }
 
 abstract class Rover extends Navigator  {
   - String roverId
-  - Plateau plateau
   - int xPosition
   - int yPosition
   - Heading currentHeading
@@ -46,6 +45,8 @@ NORTH
 EAST
 SOUTH
 WEST
++ getHeadingInitial() : char
++ getNewHeading(spinDirection : Direction) : HeadingEnum
 }
 
 enum Direction

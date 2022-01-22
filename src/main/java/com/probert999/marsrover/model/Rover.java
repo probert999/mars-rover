@@ -1,4 +1,4 @@
-package com.probert999.marsrover.app.model;
+package com.probert999.marsrover.model;
 
 import java.text.MessageFormat;
 
@@ -32,7 +32,12 @@ public abstract class Rover implements Navigator {
     {
       throw new IllegalStateException("Position has not yet been set");
     }
-    return MessageFormat.format("{0} {1} {2}",xPosition, yPosition, currentHeading.toString().charAt(0));
+    return MessageFormat.format("{0} {1} {2}",xPosition, yPosition, currentHeading.getHeadingInitial());
+  }
+
+  public void spin(DirectionEnum spinDirection)
+  {
+    currentHeading = currentHeading.getNewHeading(spinDirection);
   }
 
 }

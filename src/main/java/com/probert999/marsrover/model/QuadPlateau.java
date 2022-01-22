@@ -1,4 +1,4 @@
-package com.probert999.marsrover.app.model;
+package com.probert999.marsrover.model;
 
 public class QuadPlateau extends Plateau {
 
