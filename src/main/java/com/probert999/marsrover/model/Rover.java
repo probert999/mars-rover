@@ -37,7 +37,22 @@ public abstract class Rover implements Navigator {
 
   public void spin(DirectionEnum spinDirection)
   {
+    if (currentHeading == null)
+    {
+      throw new IllegalStateException("Heading has not yet been set");
+    }
     currentHeading = currentHeading.getNewHeading(spinDirection);
+  }
+
+  public void move()
+  {
+    switch (currentHeading)
+    {
+      case NORTH -> yPosition++;
+      case SOUTH -> yPosition--;
+      case EAST -> xPosition++;
+      case WEST -> xPosition--;
+    }
   }
 
 }
