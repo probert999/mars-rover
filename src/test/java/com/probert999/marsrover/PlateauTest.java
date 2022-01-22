@@ -44,5 +44,5 @@ public class PlateauTest {
         assertThrows(
                 IllegalArgumentException.class, () -> new QuadPlateau("QuadTestId", 5, -5));
     }
-    
+
 }

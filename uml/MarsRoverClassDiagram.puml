@@ -9,12 +9,18 @@ interface Navigator {
     + move() : void
 }
 
-class Rover extends Navigator  {
+abstract class Rover extends Navigator  {
   - String roverId
   - Plateau plateau
   - int xPosition
   - int yPosition
   - Heading currentHeading
+
+  + getRoverId() : String
+}
+
+class SurfaceRover implements Rover  {
+    + SurfaceRover(roverId : String)
 }
 
 interface PlateauInterface  {
