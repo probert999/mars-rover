@@ -18,7 +18,7 @@ abstract class Rover extends Navigator  {
 }
 
 class SurfaceRover implements Rover  {
-    + SurfaceRover(roverId : String)
+    + SurfaceRover(capcom : NASACapcomService, roverId : String)
 }
 
 interface PlateauInterface  {
@@ -47,6 +47,7 @@ SOUTH
 WEST
 + getHeadingInitial() : char
 + getNewHeading(direction : Direction) : HeadingEnum
++ getHeadingByInitial(heading : char) : HeadingEnum
 }
 
 enum Direction
@@ -58,14 +59,16 @@ RIGHT
 interface NASACapcomInterface {
   + processInstruction(instruction : String) : boolean
   + getStatusReport() : String
-  + isValidMove(plateua : Plateau, xCoordinate : int, yCoordinate : int) : boolean
+  + getPlateauList() : String
+  + getRoverList() : String
+  + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
 }
 
 abstract class NASACapcom implements NASACapcomInterface {
   - List<Rover> roverList;
   - List<Plateau> plateauList;
-
-  - createPlateau(plateauId : String, xMaximum : int, yMaximum : int) : void
+-
+  - createPlateau(xMaximum : int, yMaximum : int) : void
   - createRover(roverId : String, plateau : Plateau, xCoordinate : int, yCoordinate : int, heading : char) : void
   - getRover() : Rover
   - getRover(roverId : String) : Rover
@@ -79,9 +82,9 @@ class NASACapcomService extends NASACapcom
 }
 
 NASACapcom - Plateau
-Rover - NASACapcomService
+Rover -- NASACapcomService
 
 
-Heading -[hidden] Direction
-Direction -[hidden] NASACapcomInterface
+Heading -[hidden] Navigator
+Heading -[hidden]d-> Direction
 @enduml

@@ -20,6 +20,23 @@ public enum HeadingEnum {
     return this.headingInitial;
   }
 
+  public static HeadingEnum getByInitial(char headingInitial)
+  {
+    HeadingEnum heading = HeadingEnum.NORTH;
+    switch (headingInitial)
+    {
+      case 'N': heading = HeadingEnum.NORTH; break;
+      case 'S': heading = HeadingEnum.SOUTH; break;
+      case 'E' :heading = HeadingEnum.EAST; break;
+      case 'W' :heading = HeadingEnum.WEST; break;
+      default :
+      {
+        throw new IllegalArgumentException("Invalid heading initial");
+      }
+
+    }
+    return heading;
+  }
 
   public HeadingEnum getNewHeading(DirectionEnum direction)
   {

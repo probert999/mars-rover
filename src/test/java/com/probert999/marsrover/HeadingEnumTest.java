@@ -3,6 +3,7 @@ package com.probert999.marsrover;
 import com.probert999.marsrover.model.DirectionEnum;
 import com.probert999.marsrover.model.HeadingEnum;
 
+import com.probert999.marsrover.model.QuadPlateau;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HeadingEnumTest {
 
@@ -43,6 +45,28 @@ public class HeadingEnumTest {
                 Arguments.of(HeadingEnum.EAST, HeadingEnum.SOUTH),
                 Arguments.of(HeadingEnum.SOUTH, HeadingEnum.WEST),
                 Arguments.of(HeadingEnum.WEST, HeadingEnum.NORTH));
+    }
+
+    @ParameterizedTest
+    @MethodSource("headingInitialsTestData")
+    void shouldReturnCorrectHeadingGivenAValidInitial(
+            char heading, HeadingEnum expectedValue) {
+        assertEquals(expectedValue, HeadingEnum.getByInitial(heading));
+    }
+
+    public static Stream<Arguments> headingInitialsTestData() {
+        return Stream.of(
+                Arguments.of('N', HeadingEnum.NORTH),
+                Arguments.of('W', HeadingEnum.WEST),
+                Arguments.of('S', HeadingEnum.SOUTH),
+                Arguments.of('E', HeadingEnum.EAST));
+    }
+
+    @Test
+    public void shouldThrowAnExceptionFromgetByInitialWithInvalidInitial() {
+        assertThrows(
+                IllegalArgumentException.class, () -> HeadingEnum.getByInitial('X'));
+
     }
 
 }
