@@ -3,7 +3,6 @@ package com.probert999.marsrover;
 import com.probert999.marsrover.model.QuadPlateau;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

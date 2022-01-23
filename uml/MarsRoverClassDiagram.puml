@@ -46,7 +46,7 @@ EAST
 SOUTH
 WEST
 + getHeadingInitial() : char
-+ getNewHeading(spinDirection : Direction) : HeadingEnum
++ getNewHeading(direction : Direction) : HeadingEnum
 }
 
 enum Direction
@@ -55,7 +55,13 @@ LEFT
 RIGHT
 }
 
-class NASACapcom {
+interface NASACapcomInterface {
+  + processInstruction(instruction : String) : boolean
+  + getStatusReport() : String
+  + isValidMove(plateua : Plateau, xCoordinate : int, yCoordinate : int) : boolean
+}
+
+abstract class NASACapcom implements NASACapcomInterface {
   - List<Rover> roverList;
   - List<Plateau> plateauList;
 
@@ -66,16 +72,16 @@ class NASACapcom {
   - getPlateau(plateauId : String) : Plateau
   - getRoverStatus(roverId : String) : String
   - processSequence(roverId : String, sequence : String) : boolean
+}
 
-  + processInstruction(instruction : String) : boolean
-  + getStatusReport() : String
-  + isValidMove(plateua : Plateau, xCoordinate : int, yCoordinate : int) : boolean
+class NASACapcomService extends NASACapcom
+{
 }
 
 NASACapcom - Plateau
-Rover - NASACapcom
+Rover - NASACapcomService
 
 
-Heading -[hidden] Navigator
 Heading -[hidden] Direction
+Direction -[hidden] NASACapcomInterface
 @enduml

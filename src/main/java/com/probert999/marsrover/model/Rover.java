@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 public abstract class Rover implements Navigator {
 
+  protected NASACapcom capcom;
   protected String roverId;
   protected int xPosition;
   protected int yPosition;
@@ -46,13 +47,25 @@ public abstract class Rover implements Navigator {
 
   public void move()
   {
+    int newXPosition = xPosition;
+    int newYPosition = yPosition;
     switch (currentHeading)
     {
-      case NORTH -> yPosition++;
-      case SOUTH -> yPosition--;
-      case EAST -> xPosition++;
-      case WEST -> xPosition--;
+      case NORTH -> newYPosition++;
+      case SOUTH -> newYPosition--;
+      case EAST -> newXPosition++;
+      case WEST -> newXPosition--;
     }
+
+    if (capcom.isValidMove(roverId, newXPosition, newYPosition))
+    {
+      xPosition = newXPosition;
+      yPosition = newYPosition;
+    }
+    else {
+      throw new IllegalStateException("Invalid move - position unchanged");
+    }
+
   }
 
 }

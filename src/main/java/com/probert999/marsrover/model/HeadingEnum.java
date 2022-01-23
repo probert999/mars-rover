@@ -21,10 +21,10 @@ public enum HeadingEnum {
   }
 
 
-  public HeadingEnum getNewHeading(DirectionEnum spinDirection)
+  public HeadingEnum getNewHeading(DirectionEnum direction)
   {
     HeadingEnum newHeading;
-    if (spinDirection == DirectionEnum.LEFT) {
+    if (direction == DirectionEnum.LEFT) {
       newHeading = HeadingEnum.valueOf(this.headingLeft);
       }
     else {
