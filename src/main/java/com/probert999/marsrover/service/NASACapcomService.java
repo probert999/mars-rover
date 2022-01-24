@@ -9,11 +9,6 @@ import java.util.stream.Collectors;
 
 public class NASACapcomService extends NASACapcom {
 
-    public String getStatus()
-    {
-        return "0 0 N";
-    };
-
     public String getRoverList() {
         StringJoiner roverList = new StringJoiner("\n");
 

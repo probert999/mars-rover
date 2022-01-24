@@ -191,6 +191,30 @@ public class NASACapcomTest {
             "Rover-2 on Plateau-1 (5,5) at position and heading 1 0 W",
             capcom.getRoverList());
   }
-  
+
+  @Test
+  public void shouldProduceStatusReportForOneRover()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("0 0 N");
+
+    assertEquals("0 0 N",capcom.getStatusReport());
+  }
+
+  @Test
+  public void shouldProduceStatusReportForMoreThanOneRover()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("0 0 N");
+    capcom.processInstruction("1 2 E");
+    capcom.processInstruction("3 4 S");
+
+    assertEquals("0 0 N\n1 2 E\n3 4 S",capcom.getStatusReport());
+  }
+
 
 }

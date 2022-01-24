@@ -43,7 +43,8 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
   protected Rover getRoverById(String roverId)
   {
-    Optional<Map.Entry<Rover, Plateau>> rover = roverMap.entrySet().stream().filter(r -> r.getKey().getRoverId().equals(roverId)).findFirst();
+    Predicate<Map.Entry<Rover, Plateau>> roverFilter = r -> r.getKey().getRoverId().equals(roverId);
+    Optional<Map.Entry<Rover, Plateau>> rover = roverMap.entrySet().stream().filter(roverFilter).findFirst();
     return rover.get().getKey();
   }
 
@@ -126,6 +127,19 @@ public abstract class NASACapcom implements NASACapcomInterface {
       }
     }
   }
+
+  public String getStatusReport()
+  {
+    StringJoiner statusReport = new StringJoiner("\n");
+    List<Map.Entry<Rover, Plateau>> rovers = roverMap.entrySet().stream().collect(Collectors.toList());
+
+    for (Map.Entry<Rover, Plateau> rover : rovers)
+    {
+     statusReport.add(rover.getKey().getLocation());
+    }
+
+    return statusReport.toString();
+  };
 
 
 }
