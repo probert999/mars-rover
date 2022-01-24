@@ -42,5 +42,16 @@ public class NASACapcomTest {
         assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 N", capcom.getRoverList());
     }
 
+    @Test
+    public void shouldBeAbleToSpinRoverLeftFromInstruction()
+    {
+        NASACapcomService capcom = new NASACapcomService();
+
+        capcom.processInstruction("5 5");
+        capcom.processInstruction("0 0 N");
+        capcom.processInstruction("L");
+
+        assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 W", capcom.getRoverList());
+    }
 
 }

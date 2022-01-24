@@ -3,8 +3,6 @@ package com.probert999.marsrover;
 import com.probert999.marsrover.model.DirectionEnum;
 import com.probert999.marsrover.model.HeadingEnum;
 
-import com.probert999.marsrover.model.QuadPlateau;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

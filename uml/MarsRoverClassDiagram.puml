@@ -56,6 +56,14 @@ LEFT
 RIGHT
 }
 
+enum InstructionType
+{
+LEFT
+RIGHT
+MOVE
++ getInstructionType(instruction : String) : InstructionType
+}
+
 interface NASACapcomInterface {
   + processInstruction(instruction : String) : boolean
   + getStatusReport() : String
@@ -65,7 +73,7 @@ interface NASACapcomInterface {
 }
 
 abstract class NASACapcom implements NASACapcomInterface {
-  - List<Rover> roverList;
+  - Map<Rover, Plateau> roverMap;
   - List<Plateau> plateauList;
 -
   - createPlateau(xMaximum : int, yMaximum : int) : void
@@ -87,4 +95,6 @@ Rover -- NASACapcomService
 
 Heading -[hidden] Navigator
 Heading -[hidden]d-> Direction
+Direction -[hidden]d-> InstructionType
+
 @enduml

@@ -47,4 +47,10 @@ public abstract class NASACapcom implements NASACapcomInterface {
     }
     return roverList;
   }
+
+  private InstructionTypeEnum getInstructionType(String instruction)
+  {
+    return InstructionTypeEnum.CREATE_PLATEAU;
+  }
+
 }
