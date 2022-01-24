@@ -1,50 +1,36 @@
 package com.probert999.marsrover.service;
 
-import com.probert999.marsrover.model.HeadingEnum;
-import com.probert999.marsrover.model.InstructionTypeEnum;
-import com.probert999.marsrover.model.NASACapcom;
+import com.probert999.marsrover.model.*;
+
+import java.text.MessageFormat;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class NASACapcomService extends NASACapcom {
-
-    public boolean isValidMove(String roverId, int xCoordinate, int yCoordinate)
-    {
-        return true;
-    }
 
     public String getStatus()
     {
         return "0 0 N";
     };
 
-    public void processInstruction(String instruction)
-    {
-        InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
+    public String getRoverList() {
+        StringJoiner roverList = new StringJoiner("\n");
 
-        switch (instructionType)
-        {
-            case CREATE_PLATEAU -> {
-                int xMaximum = Character.getNumericValue(instruction.charAt(0));
-                int yMaximum = Character.getNumericValue(instruction.charAt(2));
-                createPlateau(xMaximum, yMaximum);
-                break;
-            }
-            case CREATE_ROVER -> {
-                int xCoordinate = Character.getNumericValue(instruction.charAt(0));
-                int yCoordinate = Character.getNumericValue(instruction.charAt(2));
-                HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(4));
-                createRover(xCoordinate, yCoordinate, heading);
-                break;
-            }
-            case MOVE_ROVER -> {
-                break;
-            }
-            case INVALID_INSTRUCTION -> {
+        for(Map.Entry<Rover, Plateau> entry : roverMap.entrySet()){
+            Rover rover = entry.getKey();
+            Plateau plateau = entry.getValue();
 
-            }
-
+            roverList.add(MessageFormat.format(
+                            "{0} on {1} at position and heading {2}",
+                            rover.getRoverId(), plateau.getPlateauId(), rover.getLocation()));
         }
+        return roverList.toString();
+    }
 
-    };
 
+    public String getPlateauList() {
+        return plateauList.stream().map(Plateau::getPlateauId).collect(Collectors.joining("\n"));
+    }
 
 }

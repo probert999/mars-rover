@@ -75,7 +75,7 @@ interface NASACapcomInterface {
 abstract class NASACapcom implements NASACapcomInterface {
   - Map<Rover, Plateau> roverMap;
   - List<Plateau> plateauList;
--
+
   - createPlateau(xMaximum : int, yMaximum : int) : void
   - createRover(roverId : String, plateau : Plateau, xCoordinate : int, yCoordinate : int, heading : char) : void
   - getRover() : Rover
