@@ -22,18 +22,13 @@ public enum HeadingEnum {
 
   public static HeadingEnum getByInitial(char headingInitial)
   {
-    HeadingEnum heading = HeadingEnum.NORTH;
-    switch (headingInitial)
-    {
-      case 'N': heading = HeadingEnum.NORTH; break;
-      case 'S': heading = HeadingEnum.SOUTH; break;
-      case 'E' :heading = HeadingEnum.EAST; break;
-      case 'W' :heading = HeadingEnum.WEST; break;
-      default :
-      {
-        throw new IllegalArgumentException("Invalid heading initial");
-      }
-
+    HeadingEnum heading;
+    switch (headingInitial) {
+      case 'N' -> heading = HeadingEnum.NORTH;
+      case 'S' -> heading = HeadingEnum.SOUTH;
+      case 'E' -> heading = HeadingEnum.EAST;
+      case 'W' -> heading = HeadingEnum.WEST;
+      default -> throw new IllegalArgumentException("Invalid heading initial");
     }
     return heading;
   }

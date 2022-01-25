@@ -3,7 +3,6 @@ package com.probert999.marsrover.model;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public abstract class NASACapcom implements NASACapcomInterface {
 
@@ -17,8 +16,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
     boolean coordinatesValid = targetPlateau.isValidCoordinate(xCoordinate, yCoordinate);
 
-    if (coordinatesValid)
-    {
+    if (coordinatesValid) {
       String coordinateCheck = MessageFormat.format("{0} {1}", xCoordinate, yCoordinate);
 
       Predicate<Map.Entry<Rover, Plateau>> plateauFilter = filterPlateau->filterPlateau.getValue() == targetPlateau;
@@ -27,14 +25,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
       List<Map.Entry<Rover, Plateau>> filteredRovers =
               roverMap.entrySet().stream().filter(plateauFilter).filter(roverFilter).toList();
 
-      for (Map.Entry<Rover, Plateau> rovertoCheck : filteredRovers)
-      {
-        if (rovertoCheck.getKey().getLocation().startsWith(coordinateCheck))
-        {
+      for (Map.Entry<Rover, Plateau> rovertoCheck : filteredRovers) {
+        if (rovertoCheck.getKey().getLocation().startsWith(coordinateCheck)) {
           coordinatesValid = false;
         }
       }
-
     }
 
     return coordinatesValid;
@@ -51,6 +46,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
     String plateauId =
         MessageFormat.format("Plateau-{0} ({1},{2})", plateauList.size() + 1, xMaximum, yMaximum);
     QuadPlateau quadPlateau = new QuadPlateau(plateauId, xMaximum, yMaximum);
+
     plateauList.add(quadPlateau);
     currentPlateau = quadPlateau;
   }
@@ -60,8 +56,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
       throw new IllegalStateException("No current plateau set");
     }
 
-    if (!isValidAndFreeCoordinate(currentPlateau, null, xCoordinate, yCoordinate))
-    {
+    if (!isValidAndFreeCoordinate(currentPlateau, null, xCoordinate, yCoordinate)) {
       throw new IllegalStateException("Cannot land rover on plateau at specified coordinates");
     }
 
@@ -77,39 +72,32 @@ public abstract class NASACapcom implements NASACapcomInterface {
   {
     InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
 
-    switch (instructionType)
-    {
+    switch (instructionType) {
       case CREATE_PLATEAU -> {
         List<Integer> coordinates = Arrays.stream(instruction.split(" "))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+                .map(Integer::parseInt).toList();
         int xMaximum = coordinates.get(0);
         int yMaximum = coordinates.get(1);
         createPlateau(xMaximum, yMaximum);
       }
       case CREATE_ROVER -> {
         List<Integer> coordinates =
-                Arrays.stream(instruction.substring(0,instruction.length()-1).split(" "))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+                Arrays.stream(instruction.substring(0, instruction.length() - 1).split(" "))
+                        .map(Integer::parseInt).toList();
         int xCoordinate = coordinates.get(0);
         int yCoordinate = coordinates.get(1);
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
       }
       case MOVE_ROVER -> {
-        if (currentRover != null)
-        {
+        if (currentRover != null) {
           processMoveSequence(instruction);
         }
-        else
-        {
+        else {
           throw new IllegalStateException("Invalid instruction received: No Rovers exist");
         }
       }
-
       case INVALID_INSTRUCTION -> throw new IllegalArgumentException("Invalid instruction received");
-
     }
 
   }
@@ -126,8 +114,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
   public void processMoveSequence(String moveSequence)
   {
     char[] moves = moveSequence.toCharArray();
-    for (char move : moves)
-    {
+    for (char move : moves) {
       switch (move) {
         case 'L' -> currentRover.spin(DirectionEnum.LEFT);
         case 'R' -> currentRover.spin(DirectionEnum.RIGHT);
@@ -141,8 +128,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
     StringJoiner statusReport = new StringJoiner("\n");
     List<Map.Entry<Rover, Plateau>> rovers = roverMap.entrySet().stream().toList();
 
-    for (Map.Entry<Rover, Plateau> rover : rovers)
-    {
+    for (Map.Entry<Rover, Plateau> rover : rovers) {
      statusReport.add(rover.getKey().getLocation());
     }
 

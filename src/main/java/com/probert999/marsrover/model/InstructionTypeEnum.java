@@ -6,10 +6,7 @@ public enum InstructionTypeEnum {
   MOVE_ROVER("Move Rover"),
   INVALID_INSTRUCTION("Invalid Instruction");
 
-  private final String instructionText;
-
   InstructionTypeEnum(String instructionText) {
-    this.instructionText = instructionText;
   }
 
   public static InstructionTypeEnum getInstructionType(String instruction) {

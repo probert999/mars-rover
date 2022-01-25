@@ -38,6 +38,13 @@ public class NASACapcomTest {
   }
 
   @Test
+  public void shouldNotBeAbleToCreateARoverWithoutAPlateauFromInstruction() {
+    NASACapcomService capcom = new NASACapcomService();
+
+    assertThrows(IllegalStateException.class, () -> capcom.processInstruction("5 5 N"));
+  }
+
+  @Test
   public void shouldBeAbleToSpinRoverLeftFromInstruction() {
     NASACapcomService capcom = new NASACapcomService();
 
@@ -220,7 +227,7 @@ public class NASACapcomTest {
   public void shouldNotBeAbleToIssueMoveInstructionWithNoRovers() {
     NASACapcomService capcom = new NASACapcomService();
 
-    assertThrows(IllegalStateException.class, () ->     capcom.processInstruction("M"));
+    assertThrows(IllegalStateException.class, () -> capcom.processInstruction("M"));
 
   }
 
@@ -233,4 +240,19 @@ public class NASACapcomTest {
     assertEquals("Plateau-1 (10,10)", capcom.getPlateauList());
   }
 
+  @Test
+  public void shouldProduceStatusReportForNoRovers()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    assertEquals("No rovers to report",capcom.getRoverList());
+  }
+
+  @Test
+  public void shouldProduceStatusReportForNoPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    assertEquals("No plateaus to report",capcom.getPlateauList());
+  }
 }
