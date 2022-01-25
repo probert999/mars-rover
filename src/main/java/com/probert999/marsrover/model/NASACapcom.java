@@ -3,8 +3,6 @@ package com.probert999.marsrover.model;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 
 public abstract class NASACapcom implements NASACapcomInterface {
 
@@ -26,7 +24,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
       Predicate<Map.Entry<Rover, Plateau>> roverFilter = filterRover->filterRover.getKey() != requestingRover;
 
       List<Map.Entry<Rover, Plateau>> filteredRovers =
-              roverMap.entrySet().stream().filter(plateauFilter).filter(roverFilter).collect(Collectors.toList());
+              roverMap.entrySet().stream().filter(plateauFilter).filter(roverFilter).toList();
 
       for (Map.Entry<Rover, Plateau> rovertoCheck : filteredRovers)
       {
@@ -70,7 +68,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
     SurfaceRover rover = new SurfaceRover(this, roverId);
     currentRover = rover;
-    boolean positionSet = rover.setPosition(xCoordinate, yCoordinate, heading);
+    rover.setPosition(this, xCoordinate, yCoordinate, heading);
     roverMap.put(rover, currentPlateau);
   }
 
@@ -84,26 +82,29 @@ public abstract class NASACapcom implements NASACapcomInterface {
         int xMaximum = Character.getNumericValue(instruction.charAt(0));
         int yMaximum = Character.getNumericValue(instruction.charAt(2));
         createPlateau(xMaximum, yMaximum);
-        break;
       }
       case CREATE_ROVER -> {
         int xCoordinate = Character.getNumericValue(instruction.charAt(0));
         int yCoordinate = Character.getNumericValue(instruction.charAt(2));
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(4));
         createRover(xCoordinate, yCoordinate, heading);
-        break;
       }
       case MOVE_ROVER -> {
-        processMoveSequence(instruction);
-        break;
+        if (currentRover != null)
+        {
+          processMoveSequence(instruction);
+        }
+        else
+        {
+          throw new IllegalStateException("Invalid instruction received: No Rovers exist");
+        }
       }
-      case INVALID_INSTRUCTION -> {
-        throw new IllegalArgumentException("Invalid instruction received");
-      }
+
+      case INVALID_INSTRUCTION -> throw new IllegalArgumentException("Invalid instruction received");
 
     }
 
-  };
+  }
 
   public boolean isValidMove(String roverId, int xCoordinate, int yCoordinate)
   {
@@ -119,11 +120,10 @@ public abstract class NASACapcom implements NASACapcomInterface {
     char[] moves = moveSequence.toCharArray();
     for (char move : moves)
     {
-      switch (move)
-      {
-        case 'L' : currentRover.spin(DirectionEnum.LEFT); break;
-        case 'R' : currentRover.spin(DirectionEnum.RIGHT); break;
-        case 'M' : currentRover.move(); break;
+      switch (move) {
+        case 'L' -> currentRover.spin(DirectionEnum.LEFT);
+        case 'R' -> currentRover.spin(DirectionEnum.RIGHT);
+        case 'M' -> currentRover.move();
       }
     }
   }
@@ -131,7 +131,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
   public String getStatusReport()
   {
     StringJoiner statusReport = new StringJoiner("\n");
-    List<Map.Entry<Rover, Plateau>> rovers = roverMap.entrySet().stream().collect(Collectors.toList());
+    List<Map.Entry<Rover, Plateau>> rovers = roverMap.entrySet().stream().toList();
 
     for (Map.Entry<Rover, Plateau> rover : rovers)
     {
@@ -139,7 +139,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
     }
 
     return statusReport.toString();
-  };
+  }
 
 
 }

@@ -9,7 +9,7 @@ public class NASACapcomStub extends NASACapcom {
         return (xCoordinate >=0 && yCoordinate >= 0);
     };
 
-    public String getStatus()
+    public String getStatusReport()
     {
         return "0 0 N";
     };

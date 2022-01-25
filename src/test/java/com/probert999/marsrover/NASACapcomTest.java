@@ -216,5 +216,12 @@ public class NASACapcomTest {
     assertEquals("0 0 N\n1 2 E\n3 4 S",capcom.getStatusReport());
   }
 
+  @Test
+  public void shouldNotBeAbleToIssueMoveInstructionWithNoRovers() {
+    NASACapcomService capcom = new NASACapcomService();
+
+    assertThrows(IllegalStateException.class, () ->     capcom.processInstruction("M"));
+
+  }
 
 }

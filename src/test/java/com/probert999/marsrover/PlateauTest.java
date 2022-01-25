@@ -3,8 +3,7 @@ package com.probert999.marsrover;
 import com.probert999.marsrover.model.QuadPlateau;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlateauTest {
 
@@ -20,14 +19,14 @@ public class PlateauTest {
     public void shouldReturnCoordinateIsValid()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5);
-        assertEquals(true, quadPlateau.isValidCoordinate(0,0));
+        assertTrue(quadPlateau.isValidCoordinate(0, 0));
     }
 
     @Test
     public void shouldReturnCoordinateIsInValid()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5);
-        assertEquals(false, quadPlateau.isValidCoordinate(-1,0));
+        assertFalse(quadPlateau.isValidCoordinate(-1, 0));
     }
 
     @Test

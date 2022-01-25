@@ -14,17 +14,18 @@ public abstract class Rover implements Navigator {
     return roverId;
   }
 
-  public boolean setPosition(int xCoordinate, int yCoordinate, HeadingEnum heading)
+  public void setPosition(NASACapcom capcom, int xCoordinate, int yCoordinate, HeadingEnum heading)
   {
-    boolean positionSet = false;
-    if (xCoordinate >=0 && yCoordinate >= 0)
+    if (this.capcom == capcom)
     {
       this.xPosition = xCoordinate;
       this.yPosition = yCoordinate;
       this.currentHeading = heading;
-      positionSet = true;
     }
-    return positionSet;
+    else
+    {
+      throw new IllegalCallerException("Only takes position from creating Capcom");
+    }
   }
 
   public String getLocation()

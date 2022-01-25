@@ -1,6 +1,5 @@
 package com.probert999.marsrover;
 
-import com.probert999.marsrover.model.HeadingEnum;
 import com.probert999.marsrover.model.InstructionTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

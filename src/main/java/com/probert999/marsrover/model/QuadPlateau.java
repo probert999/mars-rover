@@ -2,8 +2,8 @@ package com.probert999.marsrover.model;
 
 public class QuadPlateau extends Plateau {
 
-  private int xMaximum;
-  private int yMaximum;
+  private final int xMaximum;
+  private final int yMaximum;
 
   public QuadPlateau(String plateauId, int xMaximum, int yMaximum) {
 

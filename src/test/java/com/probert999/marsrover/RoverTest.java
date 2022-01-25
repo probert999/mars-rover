@@ -4,7 +4,6 @@ import com.probert999.marsrover.model.DirectionEnum;
 import com.probert999.marsrover.model.HeadingEnum;
 import com.probert999.marsrover.model.SurfaceRover;
 import com.probert999.marsrover.testhelper.NASACapcomStub;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,7 +14,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 
 public class RoverTest {
 
@@ -37,22 +35,21 @@ public class RoverTest {
 
   @Test
   public void shouldBeAbleToSetValidCoordinates() {
-    assertEquals(true, testRover.setPosition(0, 0, HeadingEnum.NORTH));
+    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
+    assertEquals("0 0 N",testRover.getLocation());
   }
 
   @Test
-  public void shouldNotBeAbleToSetNegativeXCoordinates() {
-    assertEquals(false, testRover.setPosition(-1, 0, HeadingEnum.NORTH));
-  }
+  public void shouldBeOnlyAbleToSetCoordinatesFromOwningCapcom() {
+    NASACapcomStub rogueCapcom = new NASACapcomStub();
 
-  @Test
-  public void shouldNotBeAbleToSetNegativeYCoordinates() {
-    assertEquals(false, testRover.setPosition(0, -1, HeadingEnum.NORTH));
+    assertThrows(IllegalCallerException.class,
+            () -> testRover.setPosition(rogueCapcom,0, 0, HeadingEnum.NORTH));
   }
 
   @Test
   public void shouldBeAbleToGetLocation() {
-    testRover.setPosition(0, 0, HeadingEnum.NORTH);
+    testRover.setPosition(capcom, 0, 0, HeadingEnum.NORTH);
     assertEquals("0 0 N", testRover.getLocation());
   }
 
@@ -63,14 +60,14 @@ public class RoverTest {
 
   @Test
   public void shouldBeAbleToSpinLeft() {
-    testRover.setPosition(0, 0, HeadingEnum.NORTH);
+    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
     testRover.spin(DirectionEnum.LEFT);
     assertEquals("0 0 W", testRover.getLocation());
   }
 
   @Test
   public void shouldBeAbleToSpinRight() {
-    testRover.setPosition(0, 0, HeadingEnum.NORTH);
+    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
     testRover.spin(DirectionEnum.RIGHT);
     assertEquals("0 0 E", testRover.getLocation());
   }
@@ -83,7 +80,7 @@ public class RoverTest {
   @ParameterizedTest
   @MethodSource("validMoveTestData")
   public void shouldBeAbleToMoveToValidAndFreeGridReference(HeadingEnum heading, String expectedResult) {
-    testRover.setPosition(2, 2, heading);
+    testRover.setPosition(capcom,2, 2, heading);
     testRover.move();
     assertEquals(expectedResult, testRover.getLocation());
   }
@@ -98,7 +95,7 @@ public class RoverTest {
 
   @Test
   public void shouldNotMoveToInvalidSpace() {
-    testRover.setPosition(0, 0, HeadingEnum.SOUTH);
+    testRover.setPosition(capcom,0, 0, HeadingEnum.SOUTH);
 
     assertThrows(IllegalStateException.class, () -> testRover.move());
     assertEquals("0 0 S", testRover.getLocation());
