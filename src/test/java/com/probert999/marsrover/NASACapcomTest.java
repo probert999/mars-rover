@@ -224,4 +224,13 @@ public class NASACapcomTest {
 
   }
 
+  @Test
+  public void shouldBeAbleToCreateAPlateauOfDoubleDigitSize() {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("10 10");
+
+    assertEquals("Plateau-1 (10,10)", capcom.getPlateauList());
+  }
+
 }

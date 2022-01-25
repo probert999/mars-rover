@@ -3,6 +3,7 @@ package com.probert999.marsrover.model;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public abstract class NASACapcom implements NASACapcomInterface {
 
@@ -79,14 +80,21 @@ public abstract class NASACapcom implements NASACapcomInterface {
     switch (instructionType)
     {
       case CREATE_PLATEAU -> {
-        int xMaximum = Character.getNumericValue(instruction.charAt(0));
-        int yMaximum = Character.getNumericValue(instruction.charAt(2));
+        List<Integer> coordinates = Arrays.stream(instruction.split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        int xMaximum = coordinates.get(0);
+        int yMaximum = coordinates.get(1);
         createPlateau(xMaximum, yMaximum);
       }
       case CREATE_ROVER -> {
-        int xCoordinate = Character.getNumericValue(instruction.charAt(0));
-        int yCoordinate = Character.getNumericValue(instruction.charAt(2));
-        HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(4));
+        List<Integer> coordinates =
+                Arrays.stream(instruction.substring(0,instruction.length()-1).split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        int xCoordinate = coordinates.get(0);
+        int yCoordinate = coordinates.get(1);
+        HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
       }
       case MOVE_ROVER -> {

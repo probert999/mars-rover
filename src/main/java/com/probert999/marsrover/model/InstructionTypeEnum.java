@@ -16,9 +16,9 @@ public enum InstructionTypeEnum {
 
     InstructionTypeEnum instructionType = INVALID_INSTRUCTION;
 
-    if (instruction.matches("[0-9] [0-9]")) {
+    if (instruction.matches("[0-9]{1,7} [0-9]{1,7}")) {
       instructionType = CREATE_PLATEAU;
-    } else if (instruction.matches("[0-9] [0-9] [NSEW]")) {
+    } else if (instruction.matches("[0-9]{1,7} [0-9]{1,7} [NSEW]")) {
       instructionType = CREATE_ROVER;
     } else if (instruction.matches("[LRM]+")) {
       instructionType = MOVE_ROVER;
