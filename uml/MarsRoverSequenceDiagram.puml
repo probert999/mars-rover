@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Console -> NASACapcom: ProcessInstruction("5 5")
+NASACapcom -> Plateau: QuadPlateau("Plateau-1",5,5)
+NASACapcom -> Console: "Awaiting instruction"
+Console -> NASACapcom: ProcessInstruction("1 2 N")
+NASACapcom -> NASACapcom: IsValidAndFreeCoordinate()
+NASACapcom -> Plateau: IsValidCoordinate(1,2)
+Plateau -> NASACapcom: true
+NASACapcom -> SurfaceRover : SurfaceRover(capcom, "Rover-1")
+NASACapcom -> SurfaceRover : SetPosition(1,2,NORTH)
+NASACapcom -> Console: "Awaiting instruction"
+Console -> NASACapcom: ProcessInstruction("LM")
+NASACapcom -> NASACapcom: processMoveSequence("LM")
+NASACapcom -> SurfaceRover: spin(LEFT)
+SurfaceRover -> HeadingEnum: getNewHeading(LEFT)
+HeadingEnum -> SurfaceRover: WEST
+NASACapcom -> SurfaceRover: move()
+SurfaceRover -> NASACapcom : isValidMove("Rover-1",0,2)
+NASACapcom -> NASACapcom: IsValidAndFreeCoordinate()
+NASACapcom -> Plateau: IsValidCoordinate(0,2)
+Plateau -> NASACapcom: true
+NASACapcom -> SurfaceRover: true
+NASACapcom -> Console: "Awaiting instruction"
+Console -> NASACapcom: ProcessInstruction("finish")
+NASACapcom -> SurfaceRover : getLocation()
+NASACapcom -> Console : "0 2 W"
+
+@enduml
