@@ -2,23 +2,24 @@
 skinparam classAttributeIconSize 0
 
 interface Navigator {
-    + setPosition(xCoordinate : int, yCoordinate : int, Heading heading) : boolean
+    + setPosition(capcom : NASACapcom, xCoordinate : int, yCoordinate : int, Heading heading) : boolean
     + getLocation() : String
     + spin(heading : SpinDirection) : void
     + move() : void
 }
 
 abstract class Rover extends Navigator  {
-  - String roverId
-  - int xPosition
-  - int yPosition
-  - Heading currentHeading
+  # String roverId
+  # NASACapcom capcom
+  # int xPosition
+  # int yPosition
+  # Heading currentHeading
 
   + getRoverId() : String
 }
 
 class SurfaceRover implements Rover  {
-    + SurfaceRover(capcom : NASACapcomService, roverId : String)
+    + SurfaceRover(capcom : NASACapcom, roverId : String)
 }
 
 interface PlateauInterface  {
@@ -35,7 +36,6 @@ class QuadPlateau implements Plateau {
   - int yMaximum
 
    + QuadPlateau(plateauId : String, xMaximum : int, yMaximum : int)
-
 }
 
 
@@ -47,7 +47,7 @@ SOUTH
 WEST
 + getHeadingInitial() : char
 + getNewHeading(direction : Direction) : HeadingEnum
-+ getHeadingByInitial(heading : char) : HeadingEnum
++ getByInitial(heading : char) : HeadingEnum
 }
 
 enum Direction
@@ -67,26 +67,29 @@ MOVE
 interface NASACapcomInterface {
   + processInstruction(instruction : String) : boolean
   + getStatusReport() : String
-  + getPlateauList() : String
-  + getRoverList() : String
   + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
 }
 
 abstract class NASACapcom implements NASACapcomInterface {
   - Map<Rover, Plateau> roverMap;
   - List<Plateau> plateauList;
+  - Plateau currentPlateau
+  - Rover currentRover
 
-  - createPlateau(xMaximum : int, yMaximum : int) : void
-  - createRover(roverId : String, plateau : Plateau, xCoordinate : int, yCoordinate : int, heading : char) : void
-  - getRover() : Rover
-  - getRover(roverId : String) : Rover
-  - getPlateau(plateauId : String) : Plateau
-  - getRoverStatus(roverId : String) : String
-  - processSequence(roverId : String, sequence : String) : boolean
+  + processInstruction(instruction : String) : void
+  + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
+  + getStatusReport() : String
+  # createPlateau(xMaximum : int, yMaximum : int) : void
+  # createRover(xCoordinate : int, yCoordinate : int, heading : HeadingEnum) : void
+  # getRoverById(roverId : String) : Rover
+  - isValidAndFreeCoordinate(plateau : Plateau, rover : Rover, xCoordinate : int, yCoordinate :int) : boolean
+  - processMoveSequence(moveSequence : String) : void
 }
 
 class NASACapcomService extends NASACapcom
 {
+  + getPlateauList() : String
+  + getRoverList() : String
 }
 
 NASACapcom - Plateau

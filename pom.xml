@@ -11,6 +11,7 @@
     <properties>
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
         <junit.platform.version>1.5.2</junit.platform.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <mockito.version>3.6.28</mockito.version>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
@@ -63,7 +64,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>16</source>
                     <target>16</target>

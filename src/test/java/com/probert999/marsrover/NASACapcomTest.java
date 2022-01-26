@@ -98,6 +98,17 @@ public class NASACapcomTest {
   }
 
   @Test
+  public void shouldHandleInvalidMoveCallFromUnknownRover() {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("0 0 N");
+
+    assertThrows( IllegalStateException.class, () -> capcom.isValidMove("NotARover-X", 0, 0));
+  }
+
+
+  @Test
   public void shouldNotBeAbleToMoveRoverToAnInvalidSpaceFromInstruction() {
     NASACapcomService capcom = new NASACapcomService();
 
@@ -236,7 +247,6 @@ public class NASACapcomTest {
     NASACapcomService capcom = new NASACapcomService();
 
     capcom.processInstruction("10 10");
-
     assertEquals("Plateau-1 (10,10)", capcom.getPlateauList());
   }
 
@@ -244,7 +254,6 @@ public class NASACapcomTest {
   public void shouldProduceStatusReportForNoRovers()
   {
     NASACapcomService capcom = new NASACapcomService();
-
     assertEquals("No rovers to report",capcom.getRoverList());
   }
 
@@ -252,7 +261,6 @@ public class NASACapcomTest {
   public void shouldProduceStatusReportForNoPlateaus()
   {
     NASACapcomService capcom = new NASACapcomService();
-
     assertEquals("No plateaus to report",capcom.getPlateauList());
   }
 }

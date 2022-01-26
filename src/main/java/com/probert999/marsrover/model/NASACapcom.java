@@ -37,9 +37,14 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
   protected Rover getRoverById(String roverId)
   {
+    Rover rover = null;
     Predicate<Map.Entry<Rover, Plateau>> roverFilter = r -> r.getKey().getRoverId().equals(roverId);
-    Optional<Map.Entry<Rover, Plateau>> rover = roverMap.entrySet().stream().filter(roverFilter).findFirst();
-    return rover.get().getKey();
+    Map.Entry<Rover, Plateau> roverEntry = roverMap.entrySet().stream().filter(roverFilter).findFirst().orElse(null);
+    if (roverEntry != null)
+    {
+      rover = roverEntry.getKey();
+    }
+    return rover;
   }
 
   protected void createPlateau(int xMaximum, int yMaximum) {
@@ -105,13 +110,17 @@ public abstract class NASACapcom implements NASACapcomInterface {
   public boolean isValidMove(String roverId, int xCoordinate, int yCoordinate)
   {
     Rover rover = getRoverById(roverId);
-    Plateau checkPlateau = roverMap.get(rover);
 
-    return isValidAndFreeCoordinate(checkPlateau, rover, xCoordinate, yCoordinate);
+    if (rover == null)
+      throw new IllegalStateException("Unknown Rover Id");
+
+    Plateau getRoverPlateau = roverMap.get(rover);
+
+    return isValidAndFreeCoordinate(getRoverPlateau, rover, xCoordinate, yCoordinate);
   }
 
 
-  public void processMoveSequence(String moveSequence)
+  private void processMoveSequence(String moveSequence)
   {
     char[] moves = moveSequence.toCharArray();
     for (char move : moves) {

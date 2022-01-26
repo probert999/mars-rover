@@ -61,7 +61,7 @@ public class HeadingEnumTest {
     }
 
     @Test
-    public void shouldThrowAnExceptionFromgetByInitialWithInvalidInitial() {
+    public void shouldThrowAnExceptionFromGetByInitialWithInvalidInitial() {
         assertThrows(
                 IllegalArgumentException.class, () -> HeadingEnum.getByInitial('X'));
 

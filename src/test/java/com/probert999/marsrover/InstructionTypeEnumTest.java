@@ -3,10 +3,7 @@ package com.probert999.marsrover;
 import com.probert999.marsrover.model.InstructionTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +13,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreatePlateauInstructionUsingSingleDigits()
     {
         String instruction = "5 5";
-
         assertEquals(InstructionTypeEnum.CREATE_PLATEAU, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -24,7 +20,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreatePlateauInstructionUsingDoubleDigits()
     {
         String instruction = "10 10";
-
         assertEquals(InstructionTypeEnum.CREATE_PLATEAU, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -32,7 +27,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreatePlateauInstructionUsingMaxDigits()
     {
         String instruction = "1000000 1000000";
-
         assertEquals(InstructionTypeEnum.CREATE_PLATEAU, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -40,7 +34,6 @@ public class InstructionTypeEnumTest {
     public void shouldRejectACreatePlateauInstructionUsingMoreThanMaxDigits()
     {
         String instruction = "10000000 10000000";
-
         assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -48,7 +41,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreateRoverInstruction()
     {
         String instruction = "5 5 N";
-
         assertEquals(InstructionTypeEnum.CREATE_ROVER, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -56,7 +48,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreateRoverInstructionWithTwoDigitCoordinates()
     {
         String instruction = "50 50 N";
-
         assertEquals(InstructionTypeEnum.CREATE_ROVER, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -64,7 +55,6 @@ public class InstructionTypeEnumTest {
     public void shouldRecogniseACreateRoverInstructionWithMaxDigitCoordinates()
     {
         String instruction = "9999999 9999999 N";
-
         assertEquals(InstructionTypeEnum.CREATE_ROVER, InstructionTypeEnum.getInstructionType(instruction));
     }
 
@@ -72,46 +62,21 @@ public class InstructionTypeEnumTest {
     public void shouldRejectACreateRoverInstructionUsingMoreThanMaxDigits()
     {
         String instruction = "10000000 10000000 N";
-
         assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
     }
 
     @ParameterizedTest
-    @MethodSource("validMoveInstructionTestData")
+    @ValueSource(strings = {"L","R","M","LL","RR","MM","LMLMLMLMM","MMRMMRMRRM"})
     public void shouldRecogniseValidRoverMoveInstructionsFromTestData(String instruction)
     {
         assertEquals(InstructionTypeEnum.MOVE_ROVER, InstructionTypeEnum.getInstructionType(instruction));
     }
 
-    public static Stream<Arguments> validMoveInstructionTestData() {
-        return Stream.of(
-                Arguments.of("L"),
-                Arguments.of("R"),
-                Arguments.of("M"),
-                Arguments.of("LL"),
-                Arguments.of("RR"),
-                Arguments.of("MM"),
-                Arguments.of("LMLMLMLMM"),
-                Arguments.of("MMRMMRMRRM")
-                );
-    }
-
     @ParameterizedTest
-    @MethodSource("invalidInstructionTestData")
+    @ValueSource(strings = {"", "10", "10 L S", "L 10 S", "S 10 10","X"})
     public void shouldRejectAnInvalidInstructions(String instruction)
     {
         assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
-    }
-
-    public static Stream<Arguments> invalidInstructionTestData() {
-        return Stream.of(
-                Arguments.of(""),
-                Arguments.of("10"),
-                Arguments.of("10 L S"),
-                Arguments.of("L 10 S"),
-                Arguments.of("S 10 10"),
-                Arguments.of("X")
-        );
     }
 
 }

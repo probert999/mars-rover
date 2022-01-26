@@ -3,7 +3,6 @@ package com.probert999.marsrover.app;
 import com.probert999.marsrover.service.NASACapcomService;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -13,12 +12,12 @@ public class Main {
   private static final String CMD_PLATEAU_LIST = "LIST PLATEAUS";
   private static final String CMD_ROVER_LIST = "LIST ROVERS";
 
-
   public static void main(String[] args) {
-    start(System.in, args);
+    NASACapcomService capcom = new NASACapcomService();
+    start(capcom, System.in, args);
   }
 
-  public static String start(InputStream ins, String[] args)  {
+  public static String start(NASACapcomService capcom, InputStream ins, String[] args)  {
 
     System.out.println("\n* NASA Capcom for Mars Rover *");
 
@@ -29,7 +28,7 @@ public class Main {
     {
       // process console
       in = new Scanner(ins);
-      statusReport = processLoop(in, false);
+      statusReport = processLoop(capcom, in, false);
     }
     else
     {
@@ -37,7 +36,7 @@ public class Main {
       File file = new File(args[0]);
       try {
         in = new Scanner(file);
-        statusReport = processLoop(in, true);
+        statusReport = processLoop(capcom, in, true);
         in.close();
       }
       catch (Exception e)  {
@@ -48,11 +47,9 @@ public class Main {
     return statusReport;
   }
 
-  private static String processLoop(Scanner in, boolean fromFile)
+  private static String processLoop(NASACapcomService capcom, Scanner in, boolean fromFile)
   {
-    NASACapcomService capcom = new NASACapcomService();
-
-    String instruction = "";
+    String instruction;
     boolean processing = true;
     while (processing) {
       try {
@@ -70,12 +67,12 @@ public class Main {
           case CMD_PLATEAU_LIST -> System.out.println(capcom.getPlateauList());
           case CMD_ROVER_LIST -> System.out.println(capcom.getRoverList());
           case CMD_FINISH -> processing = false;
-          default ->  {capcom.processInstruction(instruction); System.out.println("Processed instruction");}
+          default ->  {capcom.processInstruction(instruction);
+                        System.out.println("Processed instruction");}
         }
 
       } catch (Exception e)  {
         System.out.println(e.getMessage());
-          processing = false;
       }
     }
     return capcom.getStatusReport();
