@@ -4,6 +4,8 @@ public enum InstructionTypeEnum {
   CREATE_PLATEAU("Create Plateau"),
   CREATE_ROVER("Create Rover"),
   MOVE_ROVER("Move Rover"),
+  SWITCH_PLATEAU("Switch Plateau"),
+  SWITCH_ROVER("Switch Rover"),
   INVALID_INSTRUCTION("Invalid Instruction");
 
   InstructionTypeEnum(String instructionText) {
@@ -19,7 +21,10 @@ public enum InstructionTypeEnum {
       instructionType = CREATE_ROVER;
     } else if (instruction.matches("[LRM]+")) {
       instructionType = MOVE_ROVER;
-    }
+    }  else if (instruction.matches("SWITCH PLATEAU-[0-9]+")) {
+       instructionType = SWITCH_PLATEAU;
+    }  else if (instruction.matches("SWITCH ROVER-[0-9]+"))
+        instructionType = SWITCH_ROVER;
 
     return instructionType;
   }

@@ -24,11 +24,13 @@ class SurfaceRover implements Rover  {
 
 interface PlateauInterface  {
    + isValidCoordinate(xCoordinate : int, yCoordinate : int) : boolean
+   + getPlateauId() : String
+   + getPlateauDimensions() : String
 }
 
 abstract class Plateau extends PlateauInterface {
-  - String plateauId
-  + getPlateauId() : String
+  # String plateauId
+  # String getPlateauDimensions
 }
 
 class QuadPlateau implements Plateau {
@@ -58,14 +60,16 @@ RIGHT
 
 enum InstructionType
 {
-LEFT
-RIGHT
+CREATE_PLATEAU
+CREATE_ROVER
 MOVE
+SWITCH_PLATEAU
+SWITCH_ROVER
 + getInstructionType(instruction : String) : InstructionType
 }
 
 interface NASACapcomInterface {
-  + processInstruction(instruction : String) : boolean
+  + processInstruction(instruction : String) : String
   + getStatusReport() : String
   + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
 }
@@ -76,11 +80,12 @@ abstract class NASACapcom implements NASACapcomInterface {
   - Plateau currentPlateau
   - Rover currentRover
 
-  + processInstruction(instruction : String) : void
+  + processInstruction(instruction : String) : String
   + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
   + getStatusReport() : String
   # createPlateau(xMaximum : int, yMaximum : int) : void
   # createRover(xCoordinate : int, yCoordinate : int, heading : HeadingEnum) : void
+  # getPlateauById(PlateauId : String) : Plateau
   # getRoverById(roverId : String) : Rover
   - isValidAndFreeCoordinate(plateau : Plateau, rover : Rover, xCoordinate : int, yCoordinate :int) : boolean
   - processMoveSequence(moveSequence : String) : void

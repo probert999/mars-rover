@@ -7,7 +7,7 @@ Console -> NASACapcom: ProcessInstruction("5 5")
 NASACapcom -> Plateau: QuadPlateau("Plateau-1",5,5)
 NASACapcom -> Console: "Awaiting instruction"
 Console -> NASACapcom: ProcessInstruction("1 2 N")
-NASACapcom -> NASACapcom: IsValidAndFreeCoordinate()
+NASACapcom -> NASACapcom: IsValidAndFreeCoordinate\n(Plateau, 1, 2)
 NASACapcom -> Plateau: IsValidCoordinate(1,2)
 Plateau -> NASACapcom: true
 NASACapcom -> SurfaceRover : SurfaceRover(capcom, "Rover-1")

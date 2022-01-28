@@ -38,7 +38,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
   protected Rover getRoverById(String roverId)
   {
     Rover rover = null;
-    Predicate<Map.Entry<Rover, Plateau>> roverFilter = r -> r.getKey().getRoverId().equals(roverId);
+    Predicate<Map.Entry<Rover, Plateau>> roverFilter = r -> r.getKey().getRoverId().equalsIgnoreCase(roverId);
     Map.Entry<Rover, Plateau> roverEntry = roverMap.entrySet().stream().filter(roverFilter).findFirst().orElse(null);
     if (roverEntry != null)
     {
@@ -47,9 +47,17 @@ public abstract class NASACapcom implements NASACapcomInterface {
     return rover;
   }
 
+  protected Plateau getPlateauById(String plateuaId)
+  {
+    Predicate<Plateau> plateauFilter = r -> r.getPlateauId().equalsIgnoreCase(plateuaId);
+    Plateau plateau = plateauList.stream().filter(plateauFilter).findFirst().orElse(null);
+
+    return plateau;
+  }
+
   protected void createPlateau(int xMaximum, int yMaximum) {
     String plateauId =
-        MessageFormat.format("Plateau-{0} ({1},{2})", plateauList.size() + 1, xMaximum, yMaximum);
+        MessageFormat.format("Plateau-{0}", plateauList.size() + 1);
     QuadPlateau quadPlateau = new QuadPlateau(plateauId, xMaximum, yMaximum);
 
     plateauList.add(quadPlateau);
@@ -73,8 +81,10 @@ public abstract class NASACapcom implements NASACapcomInterface {
     roverMap.put(rover, currentPlateau);
   }
 
-  public void processInstruction(String instruction)
+  public String processInstruction(String instruction)
   {
+    String outcomeMessage = "Processed instruction";
+
     InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
 
     switch (instructionType) {
@@ -84,6 +94,21 @@ public abstract class NASACapcom implements NASACapcomInterface {
         int xMaximum = coordinates.get(0);
         int yMaximum = coordinates.get(1);
         createPlateau(xMaximum, yMaximum);
+        outcomeMessage = MessageFormat.format("{0} created", currentPlateau.getPlateauId());
+      }
+      case SWITCH_PLATEAU -> {
+        List<String> parameters = Arrays.stream(instruction.split(" ")).toList();
+        String plateauName = parameters.get(1);
+        Plateau plateau = getPlateauById(plateauName);
+        if (plateau != null)
+        {
+          currentPlateau = plateau;
+          outcomeMessage = MessageFormat.format("Current plateau is now {0}", currentPlateau.getPlateauId());
+        }
+        else
+        {
+          outcomeMessage = MessageFormat.format("{0} not found", plateauName);
+        }
       }
       case CREATE_ROVER -> {
         List<Integer> coordinates =
@@ -93,7 +118,24 @@ public abstract class NASACapcom implements NASACapcomInterface {
         int yCoordinate = coordinates.get(1);
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
+        outcomeMessage = MessageFormat.format("{0} created", currentRover.getRoverId());
       }
+
+      case SWITCH_ROVER -> {
+        List<String> parameters = Arrays.stream(instruction.split(" ")).toList();
+        String roverName = parameters.get(1);
+        Rover rover = getRoverById(roverName);
+        if (rover != null)
+        {
+          currentRover = rover;
+          outcomeMessage = MessageFormat.format("Current rover is now {0}", rover.getRoverId());
+        }
+        else
+        {
+          outcomeMessage = MessageFormat.format("{0} not found", roverName);
+        }
+      }
+
       case MOVE_ROVER -> {
         if (currentRover != null) {
           processMoveSequence(instruction);
@@ -104,7 +146,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
       }
       case INVALID_INSTRUCTION -> throw new IllegalArgumentException("Invalid instruction received");
     }
-
+    return outcomeMessage;
   }
 
   public boolean isValidMove(String roverId, int xCoordinate, int yCoordinate)

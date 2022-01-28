@@ -67,8 +67,7 @@ public class Main {
           case CMD_PLATEAU_LIST -> System.out.println(capcom.getPlateauList());
           case CMD_ROVER_LIST -> System.out.println(capcom.getRoverList());
           case CMD_FINISH -> processing = false;
-          default ->  {capcom.processInstruction(instruction);
-                        System.out.println("Processed instruction");}
+          default ->  {System.out.println(capcom.processInstruction(instruction));}
         }
 
       } catch (Exception e)  {

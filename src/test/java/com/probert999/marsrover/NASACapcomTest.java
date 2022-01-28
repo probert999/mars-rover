@@ -1,6 +1,7 @@
 package com.probert999.marsrover;
 
 import com.probert999.marsrover.service.NASACapcomService;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -263,4 +264,57 @@ public class NASACapcomTest {
     NASACapcomService capcom = new NASACapcomService();
     assertEquals("No plateaus to report",capcom.getPlateauList());
   }
+
+  @Test
+  public void shouldBeAbleToSwitchBetweenPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("3 3");
+    capcom.processInstruction("SWITCH PLATEAU-1");
+    capcom.processInstruction("3 4 S");
+
+    assertEquals("3 4 S",capcom.getStatusReport());
+  }
+
+  @Test
+  public void shouldNotBeAbleToPlateauIfNoneExist()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    assertEquals("PLATEAU-1 not found",capcom.processInstruction("SWITCH PLATEAU-1"));
+  }
+
+  @Test
+  public void shouldNotBeAbleToSwitchToUnknownPlateau()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("3 3");
+    capcom.processInstruction("2 2");
+    capcom.processInstruction("SWITCH PLATEAU-10");
+
+    assertEquals("PLATEAU-10 not found",capcom.processInstruction("SWITCH PLATEAU-10"));
+  }
+
+  @Test
+  public void shouldBeAbleToSwitchBetweenRovers()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("3 4 S");
+    capcom.processInstruction("2 2 N");
+
+    assertEquals("Current rover is now Rover-1",capcom.processInstruction("SWITCH ROVER-1"));
+  }
+
+  @Test
+  public void shouldNotBeAbleToSwitchToUnknownRover()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    assertEquals("ROVER-1 not found",capcom.processInstruction("SWITCH ROVER-1"));
+  }
+
+
 }

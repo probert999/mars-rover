@@ -6,5 +6,5 @@ public interface NASACapcomInterface {
 
   String getStatusReport();
 
-  void processInstruction(String instruction);
+  String processInstruction(String instruction);
 }

@@ -1,5 +1,7 @@
 package com.probert999.marsrover.model;
 
+import java.text.MessageFormat;
+
 public class QuadPlateau extends Plateau {
 
   private final int xMaximum;
@@ -14,6 +16,7 @@ public class QuadPlateau extends Plateau {
     this.xMaximum = xMaximum;
     this.yMaximum = yMaximum;
     this.plateauId = plateauId;
+    this.plateauDimensions =  MessageFormat.format("({0},{1})", xMaximum, yMaximum);
   }
 
   public boolean isValidCoordinate(int xCoordinate, int yCoordinate) {

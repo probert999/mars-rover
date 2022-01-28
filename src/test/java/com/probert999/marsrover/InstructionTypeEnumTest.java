@@ -79,4 +79,32 @@ public class InstructionTypeEnumTest {
         assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"SWITCH PLATEAU-1","SWITCH PLATEAU-10"})
+    public void shouldRecogniseValidSwitchPlateauInstructionFromTestData(String instruction)
+    {
+        assertEquals(InstructionTypeEnum.SWITCH_PLATEAU, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"SWITCH PLATEAU","SWITCH PLATEAU-","SWITCH PLATEAU-X"})
+    public void shouldRejectInvalidSwitchPlateauInstructionFromTestData(String instruction)
+    {
+        assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"SWITCH ROVER-1","SWITCH ROVER-10"})
+    public void shouldRecogniseValidSwitchRoverInstructionFromTestData(String instruction)
+    {
+        assertEquals(InstructionTypeEnum.SWITCH_ROVER, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"SWITCH ROVER","SWITCH ROVER-","SWITCH ROVER-X"})
+    public void shouldRejectInvalidSwitchRoverInstructionFromTestData(String instruction)
+    {
+        assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
 }

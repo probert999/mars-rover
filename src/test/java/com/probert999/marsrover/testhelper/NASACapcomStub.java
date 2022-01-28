@@ -14,6 +14,9 @@ public class NASACapcomStub extends NASACapcom {
         return "0 0 N";
     };
 
-    public void processInstruction(String instruction){};
+    public String processInstruction(String instruction)
+    {
+        return "Processed instruction";
+    };
 
 }
