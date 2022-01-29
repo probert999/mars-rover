@@ -1,6 +1,6 @@
-# Mars Rover Kata
+# Mars Rover kata
 
-Mars Rover tech task - UML, TDD, Java
+Mars Rover kata using UML, TDD, Java
 
 Input from console or file
 
@@ -10,25 +10,48 @@ Input from console or file
 
 
 ### Components
-Plateau is only concerned with it's own dimensions
+Plateau - is only concerned with its own dimensions
+
 Rover 
 
+Capcom
+
+
 ### Commands
-0 0 N
+All rovers need a plateau to land on, to create a plateau.
+
+Currently only quadrilateral shaped plateaus are supported, simply enter the maximum x and y coordinates.
+
+<li>10 10 (creates a 10x10 square, with 0,0 coordinate at the bottom left-hand corner)
 
 Maximum size for a Quad Plateau is 9999999,9999999
 
-L
-R
-M
+To create a rover on the plateau specify its x and y coordinates and heading, e.g.
+
+<li>3 5 N
+
+Move and Spin commands can be sent to the Rover using the following
+<li>L - spin left
+<li>R - spin right
+<li>M - move
+
+A single command can contain multiple move and spin instructions, e.g. LLMMMRMMM
+
+<li>SWITCH PLATEAU <plateau_id> - switches to the plateau specified
+<li>SWITCH ROVER <rover_id> - switches to the rover specified
+<li>LIST PLATEAUS - displays a list of all plateaus
+<li>LIST ROVERS - displays a list of all rovers and their location
+<li>FINISH - exists the console application
+
+On exit a simple report of all rover positions is produced.
 
 ### Move logic
-Rover cannot land on or move to the space as another Rover
+Rovers cannot land on or move to the space as another Rover
 
-Rover is provided with a link back to Capcom and on receipt of a move command calculates 
+A Rover is provided with a link back to Capcom and on receipt of a move command calculates 
 it's new coordinates then asks Capcom if it's ok to move to that space.
 
-Capcom checks with the plateau that the coordinates are within the dimensions and 
+Capcom checks with the plateau that the coordinates are within its dimensions and 
 then contacts other rovers on the same plateau to check their current position before 
 confirming the move.
 
@@ -37,7 +60,6 @@ confirming the move.
 
 
 ### Future enhancements
-Different shaped plateaus
-Flying Rover
-Switch between Rovers & Plateaus
-Additional Capcoms
+<li>Different shaped plateaus
+<li>Flying Rover
+<li>Additional Capcoms
