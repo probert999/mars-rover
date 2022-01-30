@@ -119,9 +119,9 @@ public abstract class NASACapcom implements NASACapcomInterface {
     char[] moves = moveSequence.toCharArray();
     for (char move : moves) {
       switch (move) {
-        case 'L' -> currentRover.spin(DirectionEnum.LEFT);
-        case 'R' -> currentRover.spin(DirectionEnum.RIGHT);
-        case 'M' -> currentRover.move();
+        case 'L' -> currentRover.spin(this, DirectionEnum.LEFT);
+        case 'R' -> currentRover.spin(this, DirectionEnum.RIGHT);
+        case 'M' -> currentRover.move(this);
       }
     }
   }

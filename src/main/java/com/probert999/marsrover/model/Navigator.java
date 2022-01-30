@@ -4,7 +4,7 @@ public interface Navigator {
 
   String getLocation();
 
-  void spin(DirectionEnum spinDirection);
+  void spin(NASACapcom callingCapcom, DirectionEnum spinDirection);
 
-  void move();
+  void move(NASACapcom callingCapcom);
 }

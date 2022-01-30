@@ -50,13 +50,13 @@ public class RoverTest {
 
   @Test
   public void shouldBeAbleToSpinLeft() {
-    testRover.spin(DirectionEnum.LEFT);
+    testRover.spin(capcom, DirectionEnum.LEFT);
     assertEquals("2 2 W", testRover.getLocation());
   }
 
   @Test
   public void shouldBeAbleToSpinRight() {
-    testRover.spin(DirectionEnum.RIGHT);
+    testRover.spin(capcom, DirectionEnum.RIGHT);
     assertEquals("2 2 E", testRover.getLocation());
   }
 
@@ -65,7 +65,7 @@ public class RoverTest {
   @MethodSource("validMoveTestData")
   public void shouldBeAbleToMoveToValidAndFreeGridReference(HeadingEnum heading, String expectedResult) {
     testRover = new SurfaceRover(capcom, "TestRover", plateau,2, 2, heading);
-    testRover.move();
+    testRover.move(capcom);
     assertEquals(expectedResult, testRover.getLocation());
   }
 
@@ -80,7 +80,7 @@ public class RoverTest {
   @Test
   public void shouldNotMoveToInvalidSpace() {
     testRover = new SurfaceRover(capcom, "TestRover", plateau,5, 5, HeadingEnum.NORTH);
-    assertThrows(IllegalStateException.class, () -> testRover.move());
+    assertThrows(IllegalStateException.class, () -> testRover.move(capcom));
     assertEquals("5 5 N", testRover.getLocation());
   }
 
@@ -92,8 +92,22 @@ public class RoverTest {
   @Test
   public void shouldHandlePositionStoreFailure(){
     testRover = new SurfaceRover(capcom, "ROVER-FAIL", plateau,1, 4, HeadingEnum.WEST);
-    assertThrows(IllegalStateException.class, () -> testRover.move());
+    assertThrows(IllegalStateException.class, () -> testRover.move(capcom));
   }
 
+
+  @Test
+  public void shouldNotAcceptMoveCommandFromRogueCapcom(){
+    NASACapcomStub rogueCapcom = new NASACapcomStub();
+    testRover = new SurfaceRover(capcom, "ROVER-1", plateau,2, 2, HeadingEnum.WEST);
+    assertThrows(IllegalStateException.class, () -> testRover.move(rogueCapcom));
+  }
+
+  @Test
+  public void shouldNotAcceptSpinCommandFromRogueCapcom(){
+    NASACapcomStub rogueCapcom = new NASACapcomStub();
+    testRover = new SurfaceRover(capcom, "ROVER-1", plateau,2, 2, HeadingEnum.WEST);
+    assertThrows(IllegalStateException.class, () -> testRover.spin(rogueCapcom, DirectionEnum.LEFT));
+  }
 
 }

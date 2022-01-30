@@ -1,5 +1,6 @@
 package com.probert999.marsrover.model;
 
+import java.nio.file.AccessDeniedException;
 import java.text.MessageFormat;
 
 public abstract class Rover implements Navigator {
@@ -22,13 +23,21 @@ public abstract class Rover implements Navigator {
     return MessageFormat.format("{0} {1} {2}",xPosition, yPosition, currentHeading.getHeadingInitial());
   }
 
-  public void spin(DirectionEnum spinDirection)
+  public void spin(NASACapcom callingCapcom, DirectionEnum spinDirection)
   {
+    if (callingCapcom != capcom)
+    {
+      throw new IllegalStateException("Only owning Capcom can request spin");
+    }
     currentHeading = currentHeading.getNewHeading(spinDirection);
   }
 
-  public void move()
-  {
+  public void move(NASACapcom callingCapcom)  {
+    if (callingCapcom != capcom)
+    {
+      throw new IllegalStateException("Only owning Capcom can request move");
+    }
+
     int newXPosition = xPosition;
     int newYPosition = yPosition;
 
