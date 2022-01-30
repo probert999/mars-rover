@@ -33,7 +33,11 @@ interface PlateauInterface  {
 abstract class Plateau extends PlateauInterface {
   # String id
   # String dimensions
-  # RoverDetails rovers
+  # <List>RoverDetails rovers
+
+  + showMap() : void
+  + hideMap(finished : boolean) : void
+  + isMapVisible() : boolean
 }
 
 class QuadPlateau implements Plateau {
@@ -68,6 +72,8 @@ CREATE_ROVER
 MOVE
 SWITCH_PLATEAU
 SWITCH_ROVER
+SHOW_MAP
+HIDE_MAP
 + getInstructionType(instruction : String) : InstructionType
 }
 
@@ -98,9 +104,33 @@ class NASACapcomService extends NASACapcom
   + getRoverList() : String
 }
 
+interface PlateauMapInterface {
+  + show(rovers : List<RoverDetails>) : void
+  + hide() : void
+  + isMapVisible() : boolean
+}
+
+class QuadPlateauMap implements PlateauMapInterface {
+  + QuadPlateauMap(name : String, xMaximum : int, yMaximum : int)
+}
+
+class RoverDetails {
+  - String roverName
+  - int xPosition
+  - int yPosition
+
+  + getRoverName() : String
+  + getXPosition() : int
+  + getYPosition() : int
+  + updatePosition(xPosition : int, yPosition : int)
+}
+
 NASACapcomService -- Plateau
 Rover -- NASACapcomService
 Rover -- Plateau
+Plateau -- RoverDetails
+RoverDetails -- QuadPlateauMap
+QuadPlateau -- QuadPlateauMap
 
 Heading -[Hidden] Navigator
 Heading -[hidden] Direction

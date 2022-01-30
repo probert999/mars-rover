@@ -38,8 +38,8 @@ public class NASACapcomService extends NASACapcom {
        Plateau plateau = entry.getValue();
        listOfPlateaus.add(
                MessageFormat.format(
-                       "{0} {1}",
-                       plateau.getId(), plateau.getDimensions()));
+                       "{0} {1} Map visible: {2}",
+                       plateau.getId(), plateau.getDimensions(), plateau.isMapVisible()));
      }
 
     String plateauReport = listOfPlateaus.toString();
@@ -48,4 +48,14 @@ public class NASACapcomService extends NASACapcom {
     }
     return plateauReport;
   }
+
+  public void finish() {
+
+    for (Map.Entry<String, Plateau> entry : plateauMap.entrySet()) {
+        Plateau plateau = entry.getValue();
+        plateau.hideMap(true);
+
+    }
+  }
+
 }

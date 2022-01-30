@@ -107,4 +107,19 @@ public class InstructionTypeEnumTest {
         assertEquals(InstructionTypeEnum.INVALID_INSTRUCTION, InstructionTypeEnum.getInstructionType(instruction));
     }
 
+    @Test
+    public void shouldRecogniseValidShowMapInstruction()
+    {
+        String instruction = "SHOW MAP";
+        assertEquals(InstructionTypeEnum.SHOW_MAP, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
+    @Test
+    public void shouldRecogniseValidHideMapInstruction()
+    {
+        String instruction = "HIDE MAP";
+        assertEquals(InstructionTypeEnum.HIDE_MAP, InstructionTypeEnum.getInstructionType(instruction));
+    }
+
+
 }

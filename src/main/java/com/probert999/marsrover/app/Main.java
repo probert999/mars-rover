@@ -66,7 +66,10 @@ public class Main {
         {
           case CMD_PLATEAU_LIST -> System.out.println(capcom.getPlateauList());
           case CMD_ROVER_LIST -> System.out.println(capcom.getRoverList());
-          case CMD_FINISH -> processing = false;
+          case CMD_FINISH -> {
+            capcom.finish();
+            processing = false;
+          }
           default ->  {System.out.println(capcom.processInstruction(instruction));}
         }
 

@@ -1,10 +1,10 @@
 package com.probert999.marsrover;
 
 import com.probert999.marsrover.service.NASACapcomService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class NASACapcomTest {
@@ -15,7 +15,7 @@ public class NASACapcomTest {
 
     capcom.processInstruction("5 5");
 
-    assertEquals("PLATEAU-1 (5,5)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (5,5) Map visible: false", capcom.getPlateauList());
   }
 
   @Test
@@ -25,7 +25,7 @@ public class NASACapcomTest {
     capcom.processInstruction("5 5");
     capcom.processInstruction("8 8");
 
-    assertEquals("PLATEAU-1 (5,5)\nPLATEAU-2 (8,8)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (5,5) Map visible: false\nPLATEAU-2 (8,8) Map visible: false", capcom.getPlateauList());
   }
 
   @Test
@@ -218,7 +218,7 @@ public class NASACapcomTest {
     NASACapcomService capcom = new NASACapcomService();
 
     capcom.processInstruction("10 10");
-    assertEquals("PLATEAU-1 (10,10)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (10,10) Map visible: false", capcom.getPlateauList());
   }
 
   @Test
@@ -249,7 +249,7 @@ public class NASACapcomTest {
   }
 
   @Test
-  public void shouldNotBeAbleToPlateauIfNoneExist()
+  public void shouldNotBeAbleToSwitchPlateauIfNoneExist()
   {
     NASACapcomService capcom = new NASACapcomService();
     assertEquals("PLATEAU-1 not found",capcom.processInstruction("SWITCH PLATEAU-1"));
@@ -276,7 +276,7 @@ public class NASACapcomTest {
     capcom.processInstruction("3 4 S");
     capcom.processInstruction("2 2 N");
 
-    assertEquals("Current rover is now ROVER-1",capcom.processInstruction("SWITCH ROVER-1"));
+    assertEquals("Rover is now ROVER-1. Plateau is now PLATEAU-1",capcom.processInstruction("SWITCH ROVER-1"));
   }
 
   @Test
@@ -284,6 +284,60 @@ public class NASACapcomTest {
   {
     NASACapcomService capcom = new NASACapcomService();
     assertEquals("ROVER-1 not found",capcom.processInstruction("SWITCH ROVER-1"));
+  }
+
+  @Test
+  public void shouldNotBeAbleToShowMapsWithNoPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    assertThrows(IllegalStateException.class, () -> capcom.processInstruction("SHOW MAP"));
+  }
+
+  @Test
+  public void shouldBeAbleToShowMapsWithMapEnabledPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("SHOW MAP");
+    assertEquals("PLATEAU-1 (5,5) Map visible: true", capcom.getPlateauList());
+  }
+
+  @Test
+  public void shouldNotBeAbleToHideMapsWithNoPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    assertThrows(IllegalStateException.class, () -> capcom.processInstruction("HIDE MAP"));
+  }
+
+  @Test
+  public void shouldBeAbleToHideMapsWithMapEnabledPlateaus()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("SHOW MAP");
+    capcom.processInstruction("HIDE MAP");
+    assertEquals("PLATEAU-1 (5,5) Map visible: false", capcom.getPlateauList());
+  }
+
+  @Test
+  public void shouldNotShowMapAfterMoveRoverMapNotVisible()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("SHOW MAP");
+    capcom.processInstruction("HIDE MAP");
+    capcom.processInstruction("3 4 S");
+    assertEquals("PLATEAU-1 (5,5) Map visible: false", capcom.getPlateauList());
+  }
+
+  @Test
+  public void shouldShowMapAfterMoveRoverMapVisible()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("SHOW MAP");
+    capcom.processInstruction("3 4 S");
+    assertEquals("PLATEAU-1 (5,5) Map visible: true", capcom.getPlateauList());
   }
 
 

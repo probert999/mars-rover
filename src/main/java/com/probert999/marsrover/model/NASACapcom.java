@@ -2,7 +2,6 @@ package com.probert999.marsrover.model;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.function.Predicate;
 
 public abstract class NASACapcom implements NASACapcomInterface {
 
@@ -24,7 +23,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
   protected void createPlateau(int xMaximum, int yMaximum) {
     String plateauId =
         MessageFormat.format("PLATEAU-{0}", plateauMap.size() + 1);
-    QuadPlateau quadPlateau = new QuadPlateau(plateauId, xMaximum, yMaximum);
+    QuadPlateau quadPlateau = new QuadPlateau(plateauId, xMaximum, yMaximum, true);
 
     plateauMap.put(plateauId, quadPlateau);
     currentPlateau = quadPlateau;
@@ -52,6 +51,9 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
     InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
 
+    boolean mapRefresh = false;
+    boolean showMap = false;
+
     switch (instructionType) {
       case CREATE_PLATEAU -> {
         List<Integer> coordinates = Arrays.stream(instruction.split(" "))
@@ -74,6 +76,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
         {
           outcomeMessage = MessageFormat.format("{0} not found", plateauName);
         }
+        mapRefresh = true;
       }
       case CREATE_ROVER -> {
         List<Integer> coordinates =
@@ -84,6 +87,8 @@ public abstract class NASACapcom implements NASACapcomInterface {
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
         outcomeMessage = MessageFormat.format("{0} created", currentRover.getId());
+
+        mapRefresh = true;
       }
 
       case SWITCH_ROVER -> {
@@ -93,7 +98,9 @@ public abstract class NASACapcom implements NASACapcomInterface {
         if (rover != null)
         {
           currentRover = rover;
-          outcomeMessage = MessageFormat.format("Current rover is now {0}", rover.getId());
+          currentPlateau = rover.getPlateau();
+          outcomeMessage =
+                  MessageFormat.format("Rover is now {0}. Plateau is now {1}", rover.getId(), currentPlateau.getId());
         }
         else
         {
@@ -102,15 +109,31 @@ public abstract class NASACapcom implements NASACapcomInterface {
       }
 
       case MOVE_ROVER -> {
-        if (currentRover != null) {
-          processMoveSequence(instruction);
-        }
-        else {
+        if (currentRover == null)
           throw new IllegalStateException("Invalid instruction received: No Rovers exist");
-        }
+
+        processMoveSequence(instruction);
+        mapRefresh = true;
+      }
+      case SHOW_MAP -> {
+        if (currentPlateau == null)
+          throw new IllegalStateException("Invalid instruction received: No Plateaus exist");
+
+        showMap = true;
+      }
+      case HIDE_MAP -> {
+        if (currentPlateau == null)
+          throw new IllegalStateException("Invalid instruction received: No Plateaus exist");
+
+        currentPlateau.hideMap(false);
       }
       case INVALID_INSTRUCTION -> throw new IllegalArgumentException("Invalid instruction received");
     }
+
+    if (currentPlateau != null && (mapRefresh  && currentPlateau.isMapVisible() || showMap))  {
+      currentPlateau.showMap();
+    }
+
     return outcomeMessage;
   }
 

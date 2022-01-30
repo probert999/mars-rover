@@ -4,19 +4,6 @@ import java.util.ArrayList;
 
 public abstract class Plateau implements PlateauInterface {
 
-  class RoverDetails {
-
-    String roverName;
-    int xPosition;
-    int yPosition;
-
-    protected RoverDetails(String roverName, int xPosition, int yPosition) {
-      this.roverName = roverName;
-      this.xPosition = xPosition;
-      this.yPosition = yPosition;
-    }
-  }
-
   protected String id;
   protected String dimensions;
 
@@ -35,18 +22,22 @@ public abstract class Plateau implements PlateauInterface {
     boolean updateSuccess = false;
 
     if (isValidCoordinate(xCoordinate, yCoordinate)) {
-      RoverDetails findRover =
-          rovers.stream().filter(r -> r.roverName == roverId).findFirst().orElse(null);
+      RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName() == roverId).findFirst().orElse(null);
 
       if (findRover == null) {
         RoverDetails newRover = new RoverDetails(roverId, xCoordinate, yCoordinate);
         rovers.add(newRover);
       } else {
-        findRover.xPosition = xCoordinate;
-        findRover.yPosition = yCoordinate;
+        findRover.updatePosition(xCoordinate, yCoordinate);
       }
       updateSuccess = true;
     }
     return updateSuccess;
   };
+
+  abstract public void showMap();
+
+  abstract public void hideMap(boolean finish);
+
+  abstract public boolean isMapVisible();
 }
