@@ -7,7 +7,7 @@ public class QuadPlateau extends Plateau {
   private final int xMaximum;
   private final int yMaximum;
 
-  public QuadPlateau(String plateauId, int xMaximum, int yMaximum) {
+  public QuadPlateau(String id, int xMaximum, int yMaximum) {
 
     if (xMaximum < 0 || yMaximum < 0) {
       throw new IllegalArgumentException("Negative coordinates not allowed");
@@ -15,12 +15,28 @@ public class QuadPlateau extends Plateau {
 
     this.xMaximum = xMaximum;
     this.yMaximum = yMaximum;
-    this.plateauId = plateauId;
-    this.plateauDimensions =  MessageFormat.format("({0},{1})", xMaximum, yMaximum);
+    this.id = id;
+    this.dimensions = MessageFormat.format("({0},{1})", xMaximum, yMaximum);
   }
 
   public boolean isValidCoordinate(int xCoordinate, int yCoordinate) {
-    return ((xCoordinate >= 0 && xCoordinate <= xMaximum)
-        && (yCoordinate >= 0 && yCoordinate <= yMaximum));
+    boolean validCoordinate =
+        ((xCoordinate >= 0 && xCoordinate <= xMaximum)
+            && (yCoordinate >= 0 && yCoordinate <= yMaximum));
+
+    if (validCoordinate) {
+      // check not space is not already occupied
+      RoverDetails checkRovers =
+          rovers.stream()
+              .filter(r -> r.xPosition == xCoordinate && r.yPosition == yCoordinate)
+              .findFirst()
+              .orElse(null);
+
+      if (checkRovers != null) {
+        validCoordinate = false;
+      }
+    }
+
+    return validCoordinate;
   }
 }

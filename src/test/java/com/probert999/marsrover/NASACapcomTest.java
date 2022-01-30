@@ -15,7 +15,7 @@ public class NASACapcomTest {
 
     capcom.processInstruction("5 5");
 
-    assertEquals("Plateau-1 (5,5)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (5,5)", capcom.getPlateauList());
   }
 
   @Test
@@ -25,7 +25,7 @@ public class NASACapcomTest {
     capcom.processInstruction("5 5");
     capcom.processInstruction("8 8");
 
-    assertEquals("Plateau-1 (5,5)\nPlateau-2 (8,8)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (5,5)\nPLATEAU-2 (8,8)", capcom.getPlateauList());
   }
 
   @Test
@@ -35,7 +35,7 @@ public class NASACapcomTest {
     capcom.processInstruction("5 5");
     capcom.processInstruction("0 0 N");
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 N", capcom.getRoverList());
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 N", capcom.getRoverList());
   }
 
   @Test
@@ -53,7 +53,7 @@ public class NASACapcomTest {
     capcom.processInstruction("0 0 N");
     capcom.processInstruction("L");
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 W", capcom.getRoverList());
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 W", capcom.getRoverList());
   }
 
   @Test
@@ -64,7 +64,7 @@ public class NASACapcomTest {
     capcom.processInstruction("0 0 N");
     capcom.processInstruction("R");
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 E", capcom.getRoverList());
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 E", capcom.getRoverList());
   }
 
   @Test
@@ -75,37 +75,7 @@ public class NASACapcomTest {
     capcom.processInstruction("0 0 N");
     capcom.processInstruction("M");
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 1 N", capcom.getRoverList());
-  }
-
-  @Test
-  public void shouldReturnTrueForValidMoveInPlateauBounds() {
-    NASACapcomService capcom = new NASACapcomService();
-
-    capcom.processInstruction("5 5");
-    capcom.processInstruction("0 0 N");
-
-    assertTrue(capcom.isValidMove("Rover-1", 0, 1));
-  }
-
-  @Test
-  public void shouldReturnFalseForInvalidMove() {
-    NASACapcomService capcom = new NASACapcomService();
-
-    capcom.processInstruction("5 5");
-    capcom.processInstruction("0 0 N");
-
-    assertFalse(capcom.isValidMove("Rover-1", 6, 0));
-  }
-
-  @Test
-  public void shouldHandleInvalidMoveCallFromUnknownRover() {
-    NASACapcomService capcom = new NASACapcomService();
-
-    capcom.processInstruction("5 5");
-    capcom.processInstruction("0 0 N");
-
-    assertThrows( IllegalStateException.class, () -> capcom.isValidMove("NotARover-X", 0, 0));
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 1 N", capcom.getRoverList());
   }
 
 
@@ -118,7 +88,7 @@ public class NASACapcomTest {
 
     assertThrows(IllegalStateException.class, () -> capcom.processInstruction("M"));
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 0 0 S", capcom.getRoverList());
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 S", capcom.getRoverList());
   }
 
   @Test
@@ -130,7 +100,7 @@ public class NASACapcomTest {
 
     capcom.processInstruction("LMLMLMLMM");
 
-    assertEquals("Rover-1 on Plateau-1 (5,5) at position and heading 1 3 N", capcom.getRoverList());
+    assertEquals("ROVER-1 on PLATEAU-1 (5,5) at position and heading 1 3 N", capcom.getRoverList());
   }
 
   @Test
@@ -142,8 +112,8 @@ public class NASACapcomTest {
     capcom.processInstruction("3 3 E");
 
     assertEquals(
-        "Rover-1 on Plateau-1 (5,5) at position and heading 1 2 N\n" +
-                "Rover-2 on Plateau-1 (5,5) at position and heading 3 3 E",
+        "ROVER-1 on PLATEAU-1 (5,5) at position and heading 1 2 N\n" +
+                "ROVER-2 on PLATEAU-1 (5,5) at position and heading 3 3 E",
         capcom.getRoverList());
   }
 
@@ -158,8 +128,8 @@ public class NASACapcomTest {
     capcom.processInstruction("M");
 
     assertEquals(
-            "Rover-1 on Plateau-1 (5,5) at position and heading 0 1 N\n" +
-                    "Rover-2 on Plateau-1 (5,5) at position and heading 1 0 E",
+            "ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 1 N\n" +
+                    "ROVER-2 on PLATEAU-1 (5,5) at position and heading 1 0 E",
             capcom.getRoverList());
   }
 
@@ -191,7 +161,7 @@ public class NASACapcomTest {
     assertThrows(IllegalStateException.class, () -> capcom.processInstruction("0 0 E"));
 
     assertEquals(
-            "Rover-1 on Plateau-1 (5,5) at position and heading 0 0 N",
+            "ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 N",
             capcom.getRoverList());
   }
 
@@ -206,8 +176,8 @@ public class NASACapcomTest {
     assertThrows(IllegalStateException.class, () -> capcom.processInstruction("M"));
 
     assertEquals(
-            "Rover-1 on Plateau-1 (5,5) at position and heading 0 0 N\n" +
-            "Rover-2 on Plateau-1 (5,5) at position and heading 1 0 W",
+            "ROVER-1 on PLATEAU-1 (5,5) at position and heading 0 0 N\n" +
+            "ROVER-2 on PLATEAU-1 (5,5) at position and heading 1 0 W",
             capcom.getRoverList());
   }
 
@@ -248,7 +218,7 @@ public class NASACapcomTest {
     NASACapcomService capcom = new NASACapcomService();
 
     capcom.processInstruction("10 10");
-    assertEquals("Plateau-1 (10,10)", capcom.getPlateauList());
+    assertEquals("PLATEAU-1 (10,10)", capcom.getPlateauList());
   }
 
   @Test
@@ -306,7 +276,7 @@ public class NASACapcomTest {
     capcom.processInstruction("3 4 S");
     capcom.processInstruction("2 2 N");
 
-    assertEquals("Current rover is now Rover-1",capcom.processInstruction("SWITCH ROVER-1"));
+    assertEquals("Current rover is now ROVER-1",capcom.processInstruction("SWITCH ROVER-1"));
   }
 
   @Test

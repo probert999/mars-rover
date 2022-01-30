@@ -6,61 +6,27 @@ import java.util.function.Predicate;
 
 public abstract class NASACapcom implements NASACapcomInterface {
 
-  protected List<Plateau> plateauList = new ArrayList<>();
-  protected LinkedHashMap<Rover, Plateau> roverMap = new LinkedHashMap<>();
+  protected LinkedHashMap<String, Plateau> plateauMap = new LinkedHashMap<>();
+  protected LinkedHashMap<String, Rover> roverMap = new LinkedHashMap<>();
   protected Plateau currentPlateau = null;
   protected Rover currentRover = null;
 
-
-  private boolean isValidAndFreeCoordinate(Plateau targetPlateau, Rover requestingRover, int xCoordinate, int yCoordinate) {
-
-    boolean coordinatesValid = targetPlateau.isValidCoordinate(xCoordinate, yCoordinate);
-
-    if (coordinatesValid) {
-      String coordinateCheck = MessageFormat.format("{0} {1}", xCoordinate, yCoordinate);
-
-      Predicate<Map.Entry<Rover, Plateau>> plateauFilter = filterPlateau->filterPlateau.getValue() == targetPlateau;
-      Predicate<Map.Entry<Rover, Plateau>> roverFilter = filterRover->filterRover.getKey() != requestingRover;
-
-      List<Map.Entry<Rover, Plateau>> filteredRovers =
-              roverMap.entrySet().stream().filter(plateauFilter).filter(roverFilter).toList();
-
-      for (Map.Entry<Rover, Plateau> rovertoCheck : filteredRovers) {
-        if (rovertoCheck.getKey().getLocation().startsWith(coordinateCheck)) {
-          coordinatesValid = false;
-        }
-      }
-    }
-
-    return coordinatesValid;
-  }
-
   protected Rover getRoverById(String roverId)
   {
-    Rover rover = null;
-    Predicate<Map.Entry<Rover, Plateau>> roverFilter = r -> r.getKey().getRoverId().equalsIgnoreCase(roverId);
-    Map.Entry<Rover, Plateau> roverEntry = roverMap.entrySet().stream().filter(roverFilter).findFirst().orElse(null);
-    if (roverEntry != null)
-    {
-      rover = roverEntry.getKey();
-    }
-    return rover;
+    return roverMap.get(roverId);
   }
 
   protected Plateau getPlateauById(String plateuaId)
   {
-    Predicate<Plateau> plateauFilter = r -> r.getPlateauId().equalsIgnoreCase(plateuaId);
-    Plateau plateau = plateauList.stream().filter(plateauFilter).findFirst().orElse(null);
-
-    return plateau;
+    return plateauMap.get(plateuaId);
   }
 
   protected void createPlateau(int xMaximum, int yMaximum) {
     String plateauId =
-        MessageFormat.format("Plateau-{0}", plateauList.size() + 1);
+        MessageFormat.format("PLATEAU-{0}", plateauMap.size() + 1);
     QuadPlateau quadPlateau = new QuadPlateau(plateauId, xMaximum, yMaximum);
 
-    plateauList.add(quadPlateau);
+    plateauMap.put(plateauId, quadPlateau);
     currentPlateau = quadPlateau;
   }
 
@@ -69,16 +35,15 @@ public abstract class NASACapcom implements NASACapcomInterface {
       throw new IllegalStateException("No current plateau set");
     }
 
-    if (!isValidAndFreeCoordinate(currentPlateau, null, xCoordinate, yCoordinate)) {
+    if (!currentPlateau.isValidCoordinate(xCoordinate, yCoordinate)) {
       throw new IllegalStateException("Cannot land rover on plateau at specified coordinates");
     }
 
-    String roverId = MessageFormat.format("Rover-{0}", roverMap.size() + 1);
+    String roverId = MessageFormat.format("ROVER-{0}", roverMap.size() + 1);
 
-    SurfaceRover rover = new SurfaceRover(this, roverId);
+    SurfaceRover rover = new SurfaceRover(this, roverId, currentPlateau, xCoordinate, yCoordinate, heading);
     currentRover = rover;
-    rover.setPosition(this, xCoordinate, yCoordinate, heading);
-    roverMap.put(rover, currentPlateau);
+    roverMap.put(roverId, rover);
   }
 
   public String processInstruction(String instruction)
@@ -94,7 +59,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
         int xMaximum = coordinates.get(0);
         int yMaximum = coordinates.get(1);
         createPlateau(xMaximum, yMaximum);
-        outcomeMessage = MessageFormat.format("{0} created", currentPlateau.getPlateauId());
+        outcomeMessage = MessageFormat.format("{0} created", currentPlateau.getId());
       }
       case SWITCH_PLATEAU -> {
         List<String> parameters = Arrays.stream(instruction.split(" ")).toList();
@@ -103,7 +68,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
         if (plateau != null)
         {
           currentPlateau = plateau;
-          outcomeMessage = MessageFormat.format("Current plateau is now {0}", currentPlateau.getPlateauId());
+          outcomeMessage = MessageFormat.format("Current plateau is now {0}", currentPlateau.getId());
         }
         else
         {
@@ -118,7 +83,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
         int yCoordinate = coordinates.get(1);
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
-        outcomeMessage = MessageFormat.format("{0} created", currentRover.getRoverId());
+        outcomeMessage = MessageFormat.format("{0} created", currentRover.getId());
       }
 
       case SWITCH_ROVER -> {
@@ -128,7 +93,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
         if (rover != null)
         {
           currentRover = rover;
-          outcomeMessage = MessageFormat.format("Current rover is now {0}", rover.getRoverId());
+          outcomeMessage = MessageFormat.format("Current rover is now {0}", rover.getId());
         }
         else
         {
@@ -149,19 +114,6 @@ public abstract class NASACapcom implements NASACapcomInterface {
     return outcomeMessage;
   }
 
-  public boolean isValidMove(String roverId, int xCoordinate, int yCoordinate)
-  {
-    Rover rover = getRoverById(roverId);
-
-    if (rover == null)
-      throw new IllegalStateException("Unknown Rover Id");
-
-    Plateau getRoverPlateau = roverMap.get(rover);
-
-    return isValidAndFreeCoordinate(getRoverPlateau, rover, xCoordinate, yCoordinate);
-  }
-
-
   private void processMoveSequence(String moveSequence)
   {
     char[] moves = moveSequence.toCharArray();
@@ -177,10 +129,10 @@ public abstract class NASACapcom implements NASACapcomInterface {
   public String getStatusReport()
   {
     StringJoiner statusReport = new StringJoiner("\n");
-    List<Map.Entry<Rover, Plateau>> rovers = roverMap.entrySet().stream().toList();
+    List<Map.Entry<String, Rover>> rovers = roverMap.entrySet().stream().toList();
 
-    for (Map.Entry<Rover, Plateau> rover : rovers) {
-     statusReport.add(rover.getKey().getLocation());
+    for (Map.Entry<String, Rover> rover : rovers) {
+     statusReport.add(rover.getValue().getLocation());
     }
 
     return statusReport.toString();

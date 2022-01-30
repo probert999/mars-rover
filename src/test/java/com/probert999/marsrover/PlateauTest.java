@@ -12,7 +12,7 @@ public class PlateauTest {
     {
         String plateauId = "QuadTestId";
         QuadPlateau quadPlateau = new QuadPlateau(plateauId, 5, 5);
-        assertEquals(plateauId, quadPlateau.getPlateauId());
+        assertEquals(plateauId, quadPlateau.getId());
     }
 
     @Test
@@ -42,5 +42,28 @@ public class PlateauTest {
         assertThrows(
                 IllegalArgumentException.class, () -> new QuadPlateau("QuadTestId", 5, -5));
     }
+
+    @Test
+    public void shouldBeAbleToStoreRoverPosition()
+    {
+        QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5);
+        assertTrue(quadPlateau.storeRoverPosition("Rover-1",5,5));
+    }
+
+    @Test
+    public void shouldNotBeAbleToStoreInvalidPositionForRover()
+    {
+        QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5);
+        assertFalse(quadPlateau.storeRoverPosition("Rover-1",10,5));
+    }
+
+    @Test
+    public void shouldNotBeAbleToStorePositionForRoverIfAnotherRoverIsAlreadyThere()
+    {
+        QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5);
+        assertTrue(quadPlateau.storeRoverPosition("Rover-1",1,1));
+        assertFalse(quadPlateau.storeRoverPosition("Rover-2",1,1));
+    }
+
 
 }

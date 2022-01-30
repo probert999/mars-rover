@@ -2,7 +2,6 @@
 skinparam classAttributeIconSize 0
 
 interface Navigator {
-    + setPosition(capcom : NASACapcom, xCoordinate : int, yCoordinate : int, Heading heading) : boolean
     + getLocation() : String
     + spin(heading : SpinDirection) : void
     + move() : void
@@ -10,27 +9,31 @@ interface Navigator {
 
 abstract class Rover extends Navigator  {
   # String roverId
+  # Plateau plateau
   # NASACapcom capcom
   # int xPosition
   # int yPosition
   # Heading currentHeading
 
-  + getRoverId() : String
+  + getId() : String
+  + getPlateau() : Plateau
 }
 
 class SurfaceRover implements Rover  {
-    + SurfaceRover(capcom : NASACapcom, roverId : String)
+    + SurfaceRover(capcom : NASACapcom, roverId : plateau : Plateau, String, xCoordinate : int, yCoordinate : int, heading : Heading)
 }
 
 interface PlateauInterface  {
    + isValidCoordinate(xCoordinate : int, yCoordinate : int) : boolean
-   + getPlateauId() : String
-   + getPlateauDimensions() : String
+   + getId() : String
+   + getDimensions() : String
+   + storeRoverPosition() : boolean
 }
 
 abstract class Plateau extends PlateauInterface {
-  # String plateauId
-  # String getPlateauDimensions
+  # String id
+  # String dimensions
+  # RoverDetails rovers
 }
 
 class QuadPlateau implements Plateau {
@@ -71,17 +74,15 @@ SWITCH_ROVER
 interface NASACapcomInterface {
   + processInstruction(instruction : String) : String
   + getStatusReport() : String
-  + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
 }
 
 abstract class NASACapcom implements NASACapcomInterface {
-  - Map<Rover, Plateau> roverMap;
-  - List<Plateau> plateauList;
+  - Map<String, Rover> roverMap;
+  - Map<String, Plateau> plateauMap;
   - Plateau currentPlateau
   - Rover currentRover
 
   + processInstruction(instruction : String) : String
-  + isValidMove(roverId : String, xCoordinate : int, yCoordinate : int) : boolean
   + getStatusReport() : String
   # createPlateau(xMaximum : int, yMaximum : int) : void
   # createRover(xCoordinate : int, yCoordinate : int, heading : HeadingEnum) : void
@@ -97,12 +98,12 @@ class NASACapcomService extends NASACapcom
   + getRoverList() : String
 }
 
-NASACapcom - Plateau
+NASACapcomService -- Plateau
 Rover -- NASACapcomService
+Rover -- Plateau
 
-
-Heading -[hidden] Navigator
-Heading -[hidden]d-> Direction
-Direction -[hidden]d-> InstructionType
+Heading -[Hidden] Navigator
+Heading -[hidden] Direction
+Heading -[hidden]d-> InstructionType
 
 @enduml

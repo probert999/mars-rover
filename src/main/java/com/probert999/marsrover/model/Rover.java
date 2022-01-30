@@ -5,40 +5,25 @@ import java.text.MessageFormat;
 public abstract class Rover implements Navigator {
 
   protected NASACapcom capcom;
+  protected Plateau plateau;
   protected String roverId;
   protected int xPosition;
   protected int yPosition;
   protected HeadingEnum currentHeading;
 
-  public String getRoverId() {
+  public String getId() {
     return roverId;
   }
 
-  public void setPosition(NASACapcom capcom, int xCoordinate, int yCoordinate, HeadingEnum heading)
-  {
-    if (this.capcom == capcom) {
-      this.xPosition = xCoordinate;
-      this.yPosition = yCoordinate;
-      this.currentHeading = heading;
-    }
-    else {
-      throw new IllegalCallerException("Only takes position from creating Capcom");
-    }
-  }
+  public Plateau getPlateau() { return plateau; }
 
   public String getLocation()
   {
-    if (currentHeading == null) {
-      throw new IllegalStateException("Position has not yet been set");
-    }
     return MessageFormat.format("{0} {1} {2}",xPosition, yPosition, currentHeading.getHeadingInitial());
   }
 
   public void spin(DirectionEnum spinDirection)
   {
-    if (currentHeading == null) {
-      throw new IllegalStateException("Heading has not yet been set");
-    }
     currentHeading = currentHeading.getNewHeading(spinDirection);
   }
 
@@ -54,7 +39,12 @@ public abstract class Rover implements Navigator {
       case WEST -> newXPosition--;
     }
 
-    if (capcom.isValidMove(roverId, newXPosition, newYPosition)) {
+    if (plateau.isValidCoordinate(newXPosition, newYPosition)) {
+      boolean updateSuccess = plateau.storeRoverPosition(roverId, newXPosition, newYPosition);
+      if (!updateSuccess)
+      {
+        throw new IllegalStateException("Unable to store updated position");
+      }
       xPosition = newXPosition;
       yPosition = newYPosition;
     }

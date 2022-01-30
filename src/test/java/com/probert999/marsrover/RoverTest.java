@@ -4,6 +4,7 @@ import com.probert999.marsrover.model.DirectionEnum;
 import com.probert999.marsrover.model.HeadingEnum;
 import com.probert999.marsrover.model.SurfaceRover;
 import com.probert999.marsrover.testhelper.NASACapcomStub;
+import com.probert999.marsrover.testhelper.QuadPlateauStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,68 +20,51 @@ public class RoverTest {
 
   private NASACapcomStub capcom;
   private SurfaceRover testRover;
+  private QuadPlateauStub plateau;
 
   @BeforeEach
   public void setup() {
     capcom = new NASACapcomStub();
-    testRover = new SurfaceRover(capcom,"testRover1");
+    plateau = new QuadPlateauStub();
+    testRover = new SurfaceRover(capcom, "TestRover", plateau,2, 2, HeadingEnum.NORTH);
   }
 
   @Test
   public void shouldReturnCorrectRoverId() {
     String testRoverId = "TestRover";
-    SurfaceRover firstRover = new SurfaceRover(capcom, testRoverId);
-    assertEquals(testRoverId, firstRover.getRoverId());
+    SurfaceRover firstRover = new SurfaceRover(capcom, testRoverId, plateau,2, 2, HeadingEnum.NORTH);
+    assertEquals(testRoverId, firstRover.getId());
   }
 
   @Test
-  public void shouldBeAbleToSetValidCoordinates() {
-    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
-    assertEquals("0 0 N",testRover.getLocation());
-  }
-
-  @Test
-  public void shouldBeOnlyAbleToSetCoordinatesFromOwningCapcom() {
-    NASACapcomStub rogueCapcom = new NASACapcomStub();
-
-    assertThrows(IllegalCallerException.class,
-            () -> testRover.setPosition(rogueCapcom,0, 0, HeadingEnum.NORTH));
+  public void shouldReturnCorrectPlateau() {
+    String testRoverId = "TestRover";
+    SurfaceRover firstRover = new SurfaceRover(capcom, testRoverId, plateau,2, 2, HeadingEnum.NORTH);
+    assertEquals(plateau, firstRover.getPlateau());
   }
 
   @Test
   public void shouldBeAbleToGetLocation() {
-    testRover.setPosition(capcom, 0, 0, HeadingEnum.NORTH);
-    assertEquals("0 0 N", testRover.getLocation());
-  }
-
-  @Test
-  public void shouldNotBeAbleToGetLocationIfItHasNotBeenSet() {
-    assertThrows(IllegalStateException.class, () -> testRover.getLocation());
+    assertEquals("2 2 N", testRover.getLocation());
   }
 
   @Test
   public void shouldBeAbleToSpinLeft() {
-    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
     testRover.spin(DirectionEnum.LEFT);
-    assertEquals("0 0 W", testRover.getLocation());
+    assertEquals("2 2 W", testRover.getLocation());
   }
 
   @Test
   public void shouldBeAbleToSpinRight() {
-    testRover.setPosition(capcom,0, 0, HeadingEnum.NORTH);
     testRover.spin(DirectionEnum.RIGHT);
-    assertEquals("0 0 E", testRover.getLocation());
+    assertEquals("2 2 E", testRover.getLocation());
   }
 
-  @Test
-  public void shouldNotBeAbleToSpinIfHeadingHasNotBeenSet() {
-    assertThrows(IllegalStateException.class, () -> testRover.spin(DirectionEnum.RIGHT));
-  }
 
   @ParameterizedTest
   @MethodSource("validMoveTestData")
   public void shouldBeAbleToMoveToValidAndFreeGridReference(HeadingEnum heading, String expectedResult) {
-    testRover.setPosition(capcom,2, 2, heading);
+    testRover = new SurfaceRover(capcom, "TestRover", plateau,2, 2, heading);
     testRover.move();
     assertEquals(expectedResult, testRover.getLocation());
   }
@@ -95,9 +79,21 @@ public class RoverTest {
 
   @Test
   public void shouldNotMoveToInvalidSpace() {
-    testRover.setPosition(capcom,0, 0, HeadingEnum.SOUTH);
-
+    testRover = new SurfaceRover(capcom, "TestRover", plateau,5, 5, HeadingEnum.NORTH);
     assertThrows(IllegalStateException.class, () -> testRover.move());
-    assertEquals("0 0 S", testRover.getLocation());
+    assertEquals("5 5 N", testRover.getLocation());
   }
+
+  @Test
+  public void shouldNotBeAbleToStoreInvalidPosition(){
+    assertThrows(IllegalStateException.class, () -> new SurfaceRover(capcom, "TestRover", plateau,-1, 0, HeadingEnum.SOUTH));
+  }
+
+  @Test
+  public void shouldHandlePositionStoreFailure(){
+    testRover = new SurfaceRover(capcom, "ROVER-FAIL", plateau,1, 4, HeadingEnum.WEST);
+    assertThrows(IllegalStateException.class, () -> testRover.move());
+  }
+
+
 }

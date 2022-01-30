@@ -4,7 +4,10 @@ public interface PlateauInterface {
 
   boolean isValidCoordinate(int xCoordinate, int yCoordinate);
 
-  String getPlateauId();
+  String getId();
 
-  String getPlateauDimensions();
+  String getDimensions();
+
+  boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate);
+
 }
