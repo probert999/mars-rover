@@ -1,6 +1,6 @@
 package com.probert999.marsrover.model;
 
-public interface PlateauInterface {
+interface PlateauInterface {
 
   boolean isValidCoordinate(String roverId, int xCoordinate, int yCoordinate);
 

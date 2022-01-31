@@ -54,6 +54,13 @@ public class MainTest {
         assertEquals("ROVER-1 at 0 7 W on PLATEAU-1\nROVER-2 at 500 493 S on PLATEAU-2",  Main.start(capcom,in,args));
     }
 
+    @Test
+    public void shouldHandleBigMoves() {
+        NASACapcomService capcom = new NASACapcomService();
+        String[] args = {"testdata\\bigMap.txt"};
+        InputStream in = System.in;
+        assertEquals("ROVER-1 at 0 0 N on PLATEAU-1",  Main.start(capcom,in,args));
+    }
 
 
 }
