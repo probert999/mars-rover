@@ -10,7 +10,7 @@ Console -> NASACapcom: ProcessInstruction("1 2 N")
 NASACapcom -> Plateau: IsValidCoordinate(1,2)
 Plateau -> NASACapcom: true
 NASACapcom -> SurfaceRover : SurfaceRover(capcom, "Rover-1", "Plateau-1", 1, 2, NORTH)
-SurfaceRover -> Plateau : StoreRoverPosition("Rover-1",1,2)
+SurfaceRover -> Plateau : StoreRoverPosition("Rover-1",1,2, 'N')
 NASACapcom -> Console: "Awaiting instruction"
 Console -> NASACapcom: ProcessInstruction("LM")
 NASACapcom -> NASACapcom: processMoveSequence("LM")
@@ -20,7 +20,7 @@ HeadingEnum -> SurfaceRover: WEST
 NASACapcom -> SurfaceRover: move()
 SurfaceRover -> Plateau: IsValidCoordinate(0,2)
 Plateau -> SurfaceRover: true
-SurfaceRover -> Plateau: StoreRoverPosition("Rover-1",0,2)
+SurfaceRover -> Plateau: StoreRoverPosition("Rover-1",0,2, 'W')
 NASACapcom -> Console: "Awaiting instruction"
 Console -> NASACapcom: ProcessInstruction("finish")
 NASACapcom -> SurfaceRover : getLocation()

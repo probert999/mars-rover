@@ -2,6 +2,7 @@ package com.probert999.marsrover.app;
 
 import com.probert999.marsrover.service.NASACapcomService;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -9,9 +10,10 @@ import java.util.Scanner;
 public class Main {
 
   private static final String CMD_FINISH = "FINISH";
+  private static final String CMD_HELP = "HELP";
   private static final String CMD_PLATEAU_LIST = "LIST PLATEAUS";
   private static final String CMD_ROVER_LIST = "LIST ROVERS";
-
+  private static final String HELP_FILE = "help\\helptext.txt";
   public static void main(String[] args) {
     NASACapcomService capcom = new NASACapcomService();
     start(capcom, System.in, args);
@@ -19,7 +21,9 @@ public class Main {
 
   public static String start(NASACapcomService capcom, InputStream ins, String[] args)  {
 
-    System.out.println("\n* NASA Capcom for Mars Rover *");
+    System.out.println("\n******** NASA Capcom for Mars Rover ********\n");
+
+    showHelp();
 
     Scanner in;
     String statusReport = null;
@@ -66,6 +70,7 @@ public class Main {
         {
           case CMD_PLATEAU_LIST -> System.out.println(capcom.getPlateauList());
           case CMD_ROVER_LIST -> System.out.println(capcom.getRoverList());
+          case CMD_HELP -> showHelp();
           case CMD_FINISH -> {
             capcom.finish();
             processing = false;
@@ -78,5 +83,20 @@ public class Main {
       }
     }
     return capcom.getStatusReport();
+  }
+
+  private static void showHelp()
+  {
+    File file = new File(HELP_FILE);
+
+    try {
+      Scanner in = new Scanner(file);
+      while (in.hasNext())
+      {
+        System.out.println(in.nextLine());
+        }
+     } catch (Exception e)  {
+    System.out.println(e.getMessage());
+    }
   }
 }

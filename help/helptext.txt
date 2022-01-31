@@ -1,0 +1,14 @@
+
+<x> <y>            Creates a plateau with maximum coordinates of x and y, e.g. 10 10
+<x> <y> <heading>  Creates a rover on the current plateau at x,y with given heading, e.g. 5 5 N
+M                  Moves current rover one space on current heading
+L                  Spins current rover to the left
+R                  Spins current rover to the right
+SWITCH <rover>     Switch commands to specified rover, e.g. SWITCH ROVER-2
+SWITCH <plateau>   Switch commands to specified plateau, e.g. SWITCH PLATEAU-2
+SHOW MAP           Shows the map for the current plateau (if map feature available)
+HIDE MAP           Hides the map for the current plateau
+LIST PLATEAUS      Show a list of available plateaus
+LIST ROVERS        Show a list of available rovers
+FINISH             Produced final report and exit command
+HELP               Show help text

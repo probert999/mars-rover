@@ -118,11 +118,13 @@ class RoverDetails {
   - String roverName
   - int xPosition
   - int yPosition
+  - char heading
 
   + getRoverName() : String
   + getXPosition() : int
   + getYPosition() : int
-  + updatePosition(xPosition : int, yPosition : int)
+  + getHeading() : char
+  + updatePosition(roverName : String, xPosition : int, yPosition : int, heading:char)
 }
 
 NASACapcomService -- Plateau
