@@ -8,6 +8,6 @@ public interface PlateauInterface {
 
   String getDimensions();
 
-  boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate);
+  boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate, char heading);
 
 }

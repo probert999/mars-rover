@@ -59,8 +59,7 @@ public class QuadPlateauMap implements PlateauMapInterface {
   }
 
   public void hide(boolean finish) {
-      if (finish)
-      {
+      if (finish) {
           mapFrame.dispose();
       } else {
       mapFrame.setVisible(false);

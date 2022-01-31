@@ -94,8 +94,8 @@ abstract class NASACapcom implements NASACapcomInterface {
   # createRover(xCoordinate : int, yCoordinate : int, heading : HeadingEnum) : void
   # getPlateauById(PlateauId : String) : Plateau
   # getRoverById(roverId : String) : Rover
-  - isValidAndFreeCoordinate(plateau : Plateau, rover : Rover, xCoordinate : int, yCoordinate :int) : boolean
   - processMoveSequence(moveSequence : String) : void
+  - getParametersFromInstruction(instruction : String) : List<String>
 }
 
 class NASACapcomService extends NASACapcom

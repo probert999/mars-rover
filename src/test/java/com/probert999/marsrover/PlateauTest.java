@@ -61,22 +61,22 @@ public class PlateauTest {
     public void shouldBeAbleToStoreRoverPosition()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5, false);
-        assertTrue(quadPlateau.storeRoverPosition("Rover-1",5,5));
+        assertTrue(quadPlateau.storeRoverPosition("Rover-1",5,5, 'N'));
     }
 
     @Test
     public void shouldNotBeAbleToStoreInvalidPositionForRover()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5, false);
-        assertFalse(quadPlateau.storeRoverPosition("Rover-1",10,5));
+        assertFalse(quadPlateau.storeRoverPosition("Rover-1",10,5, 'N'));
     }
 
     @Test
     public void shouldNotBeAbleToStorePositionForRoverIfAnotherRoverIsAlreadyThere()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5, false);
-        assertTrue(quadPlateau.storeRoverPosition("Rover-1",1,1));
-        assertFalse(quadPlateau.storeRoverPosition("Rover-2",1,1));
+        assertTrue(quadPlateau.storeRoverPosition("Rover-1",1,1, 'N'));
+        assertFalse(quadPlateau.storeRoverPosition("Rover-2",1,1,'N'));
     }
 
     @Test

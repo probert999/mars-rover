@@ -27,8 +27,7 @@ public class QuadPlateau extends Plateau {
     this.dimensions = MessageFormat.format("({0},{1})", xMaximum, yMaximum);
     this.mapEnabled = mapEnabled;
 
-    if (mapEnabled)
-    {
+    if (mapEnabled) {
       plateauMap = new QuadPlateauMap(id, xMaximum, yMaximum);
     }
   }
@@ -38,38 +37,31 @@ public class QuadPlateau extends Plateau {
         ((xCoordinate >= 0 && xCoordinate <= xMaximum)
             && (yCoordinate >= 0 && yCoordinate <= yMaximum));
 
+    RoverDetails checkRovers = null;
     if (validCoordinate) {
       // check not space is not already occupied
-      RoverDetails checkRovers =
+      checkRovers =
           rovers.stream()
               .filter(r -> r.getXPosition() == xCoordinate && r.getYPosition() == yCoordinate)
               .findFirst()
               .orElse(null);
-
-      if (checkRovers != null) {
-        validCoordinate = false;
-      }
     }
-
-    return validCoordinate;
+    return (validCoordinate && checkRovers == null);
   }
 
-  public void showMap()
-  {
+  public void showMap() {
     if (!mapEnabled)
       throw new IllegalStateException("Map feature not enabled");
 
     plateauMap.show(rovers);
   }
 
-  public void hideMap(boolean finish)
-  {
+  public void hideMap(boolean finish) {
     if (mapEnabled)
       plateauMap.hide(finish);
   }
 
-  public boolean isMapVisible()
-  {
+  public boolean isMapVisible() {
     return mapEnabled && plateauMap.isMapVisible();
   }
 }

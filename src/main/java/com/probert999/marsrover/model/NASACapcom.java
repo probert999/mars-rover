@@ -10,6 +10,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
   protected Plateau currentPlateau = null;
   protected Rover currentRover = null;
 
+
+  private List<String> getParametersFromInstruction(String instruction) {
+    return Arrays.stream(instruction.split(" ")).toList();
+  }
+
   protected Rover getRoverById(String roverId)
   {
     return roverMap.get(roverId);
@@ -45,45 +50,37 @@ public abstract class NASACapcom implements NASACapcomInterface {
     roverMap.put(roverId, rover);
   }
 
-  public String processInstruction(String instruction)
-  {
+  public String processInstruction(String instruction) {
     String outcomeMessage = "Processed instruction";
 
     InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
 
     boolean mapRefresh = false;
     boolean showMap = false;
+    List<String> parameters = getParametersFromInstruction(instruction);
 
     switch (instructionType) {
       case CREATE_PLATEAU -> {
-        List<Integer> coordinates = Arrays.stream(instruction.split(" "))
-                .map(Integer::parseInt).toList();
-        int xMaximum = coordinates.get(0);
-        int yMaximum = coordinates.get(1);
+        int xMaximum = Integer.parseInt(parameters.get(0));
+        int yMaximum = Integer.parseInt(parameters.get(1));
         createPlateau(xMaximum, yMaximum);
         outcomeMessage = MessageFormat.format("{0} created", currentPlateau.getId());
       }
       case SWITCH_PLATEAU -> {
-        List<String> parameters = Arrays.stream(instruction.split(" ")).toList();
         String plateauName = parameters.get(1);
         Plateau plateau = getPlateauById(plateauName);
-        if (plateau != null)
-        {
+        if (plateau != null) {
           currentPlateau = plateau;
           outcomeMessage = MessageFormat.format("Current plateau is now {0}", currentPlateau.getId());
         }
-        else
-        {
+        else {
           outcomeMessage = MessageFormat.format("{0} not found", plateauName);
         }
         mapRefresh = true;
       }
       case CREATE_ROVER -> {
-        List<Integer> coordinates =
-                Arrays.stream(instruction.substring(0, instruction.length() - 1).split(" "))
-                        .map(Integer::parseInt).toList();
-        int xCoordinate = coordinates.get(0);
-        int yCoordinate = coordinates.get(1);
+        int xCoordinate = Integer.parseInt(parameters.get(0));
+        int yCoordinate = Integer.parseInt(parameters.get(1));
         HeadingEnum heading = HeadingEnum.getByInitial(instruction.charAt(instruction.length()-1));
         createRover(xCoordinate, yCoordinate, heading);
         outcomeMessage = MessageFormat.format("{0} created", currentRover.getId());
@@ -92,18 +89,15 @@ public abstract class NASACapcom implements NASACapcomInterface {
       }
 
       case SWITCH_ROVER -> {
-        List<String> parameters = Arrays.stream(instruction.split(" ")).toList();
         String roverName = parameters.get(1);
         Rover rover = getRoverById(roverName);
-        if (rover != null)
-        {
+        if (rover != null) {
           currentRover = rover;
           currentPlateau = rover.getPlateau();
           outcomeMessage =
                   MessageFormat.format("Rover is now {0}. Plateau is now {1}", rover.getId(), currentPlateau.getId());
         }
-        else
-        {
+        else {
           outcomeMessage = MessageFormat.format("{0} not found", roverName);
         }
       }
@@ -137,8 +131,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
     return outcomeMessage;
   }
 
-  private void processMoveSequence(String moveSequence)
-  {
+  private void processMoveSequence(String moveSequence) {
     char[] moves = moveSequence.toCharArray();
     for (char move : moves) {
       switch (move) {
@@ -149,8 +142,7 @@ public abstract class NASACapcom implements NASACapcomInterface {
     }
   }
 
-  public String getStatusReport()
-  {
+  public String getStatusReport() {
     StringJoiner statusReport = new StringJoiner("\n");
     List<Map.Entry<String, Rover>> rovers = roverMap.entrySet().stream().toList();
 

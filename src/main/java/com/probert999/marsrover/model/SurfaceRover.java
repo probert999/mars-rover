@@ -10,7 +10,7 @@ public class SurfaceRover extends Rover {
     this.yPosition = yCoordinate;
     this.currentHeading = heading;
 
-    boolean updateSuccess = plateau.storeRoverPosition(roverId, xCoordinate, yCoordinate);
+    boolean updateSuccess = plateau.storeRoverPosition(roverId, xCoordinate, yCoordinate, heading.getHeadingInitial());
     if (!updateSuccess)
     {
       throw new IllegalStateException("Unable to set position on plateau");

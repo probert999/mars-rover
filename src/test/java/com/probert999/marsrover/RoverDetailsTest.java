@@ -1,14 +1,9 @@
 package com.probert999.marsrover;
 
-
-
 import com.probert999.marsrover.model.RoverDetails;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RoverDetailsTest {
 
@@ -20,7 +15,7 @@ public class RoverDetailsTest {
     @BeforeEach
     public void setup()
     {
-       testRover = new RoverDetails(roverName, xPosition, yPosition);
+       testRover = new RoverDetails(roverName, xPosition, yPosition, 'N');
     }
 
     @Test
@@ -36,6 +31,11 @@ public class RoverDetailsTest {
     @Test
     public void shouldBeAbleToCreateRoverDetailsAndGetCorrectYPosition(){
         assertEquals(yPosition, testRover.getYPosition());
+    }
+
+    @Test
+    public void shouldBeAbleToCreateRoverDetailsAndGetCorrectHeading(){
+        assertEquals('N', testRover.getHeading());
     }
 
 }

@@ -49,7 +49,7 @@ public abstract class Rover implements Navigator {
     }
 
     if (plateau.isValidCoordinate(newXPosition, newYPosition)) {
-      boolean updateSuccess = plateau.storeRoverPosition(roverId, newXPosition, newYPosition);
+      boolean updateSuccess = plateau.storeRoverPosition(roverId, newXPosition, newYPosition, currentHeading.getHeadingInitial());
       if (!updateSuccess)
       {
         throw new IllegalStateException("Unable to store updated position");

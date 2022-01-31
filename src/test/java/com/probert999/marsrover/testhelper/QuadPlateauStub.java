@@ -11,7 +11,7 @@ public class QuadPlateauStub extends Plateau {
     }
 
     @Override
-    public boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate) {
+    public boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate, char heading) {
         return (xCoordinate >=1 && yCoordinate >= 0) && (xCoordinate <= 5 && yCoordinate <= 5);
     }
 

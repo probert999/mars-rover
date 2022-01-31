@@ -20,8 +20,7 @@ public enum HeadingEnum {
     return this.headingInitial;
   }
 
-  public static HeadingEnum getByInitial(char headingInitial)
-  {
+  public static HeadingEnum getByInitial(char headingInitial) {
     HeadingEnum heading;
     switch (headingInitial) {
       case 'N' -> heading = HeadingEnum.NORTH;
@@ -33,8 +32,7 @@ public enum HeadingEnum {
     return heading;
   }
 
-  public HeadingEnum getNewHeading(DirectionEnum direction)
-  {
+  public HeadingEnum getNewHeading(DirectionEnum direction) {
     HeadingEnum newHeading;
     if (direction == DirectionEnum.LEFT) {
       newHeading = HeadingEnum.valueOf(this.headingLeft);

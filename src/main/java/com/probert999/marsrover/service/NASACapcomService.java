@@ -54,7 +54,6 @@ public class NASACapcomService extends NASACapcom {
     for (Map.Entry<String, Plateau> entry : plateauMap.entrySet()) {
         Plateau plateau = entry.getValue();
         plateau.hideMap(true);
-
     }
   }
 
