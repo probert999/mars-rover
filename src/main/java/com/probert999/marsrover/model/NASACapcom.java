@@ -129,17 +129,23 @@ public abstract class NASACapcom implements NASACapcomInterface {
     return outcomeMessage;
   }
 
-  private void processMoveSequence(String moveSequence) {
+  private void processMoveSequence(String moveSequence)
+  {
     char[] moves = moveSequence.toCharArray();
-    for (char move : moves) {
-      switch (move) {
+    for (char move : moves)
+    {
+      switch (move)
+      {
         case 'L' -> currentRover.spin(this, DirectionEnum.LEFT);
         case 'R' -> currentRover.spin(this, DirectionEnum.RIGHT);
         case 'M' -> currentRover.move(this);
       }
+      if (currentPlateau != null && currentPlateau.isMapVisible()) {
+        currentPlateau.showMap();
+      }
     }
-  }
 
+}
   public String getStatusReport() {
     StringJoiner statusReport = new StringJoiner("\n");
     List<Map.Entry<String, Rover>> rovers = roverMap.entrySet().stream().toList();
@@ -151,4 +157,6 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
     return statusReport.toString();
   }
+
+
 }
