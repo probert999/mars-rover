@@ -22,25 +22,17 @@ public abstract class Plateau implements PlateauInterface {
 
     RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName() == roverId).findFirst().orElse(null);
     if (findRover == null) {
-      if (isValidCoordinate(xCoordinate, yCoordinate)) {
+      if (isValidCoordinate(null, xCoordinate, yCoordinate)) {
         RoverDetails newRover = new RoverDetails(roverId, xCoordinate, yCoordinate, heading);
         rovers.add(newRover);
         updateSuccess = true;
       }
     } else {
-      if (findRover.getXPosition() != xCoordinate && findRover.getYPosition() != yCoordinate) {
-        // Rover moving to new space
-        if (isValidCoordinate(xCoordinate, yCoordinate)) {
-          findRover.updatePosition(xCoordinate, yCoordinate, heading);
-          updateSuccess = true;
-        }
-      } else {
-        // Just an update to the heading
+      if (isValidCoordinate(findRover.getRoverName(), xCoordinate, yCoordinate)) {
         findRover.updatePosition(xCoordinate, yCoordinate, heading);
         updateSuccess = true;
       }
     }
-
     return updateSuccess;
   };
 

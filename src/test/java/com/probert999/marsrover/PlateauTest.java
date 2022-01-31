@@ -19,14 +19,14 @@ public class PlateauTest {
     public void shouldReturnCoordinateIsValid()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5, false);
-        assertTrue(quadPlateau.isValidCoordinate(0, 0));
+        assertTrue(quadPlateau.isValidCoordinate(null,0, 0));
     }
 
     @Test
     public void shouldReturnCoordinateIsInValid()
     {
         QuadPlateau quadPlateau = new QuadPlateau("QuadTestId", 5, 5, false);
-        assertFalse(quadPlateau.isValidCoordinate(-1, 0));
+        assertFalse(quadPlateau.isValidCoordinate(null,-1, 0));
     }
 
     @Test

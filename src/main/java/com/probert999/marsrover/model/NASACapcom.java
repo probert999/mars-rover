@@ -37,11 +37,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
       throw new IllegalStateException("No current plateau set");
     }
 
-    if (!currentPlateau.isValidCoordinate(xCoordinate, yCoordinate)) {
+    String roverId = MessageFormat.format("ROVER-{0}", roverMap.size() + 1);
+
+    if (!currentPlateau.isValidCoordinate(roverId, xCoordinate, yCoordinate)) {
       throw new IllegalStateException("Cannot land rover on plateau at specified coordinates");
     }
-
-    String roverId = MessageFormat.format("ROVER-{0}", roverMap.size() + 1);
 
     SurfaceRover rover = new SurfaceRover(this, roverId, currentPlateau, xCoordinate, yCoordinate, heading);
     currentRover = rover;
@@ -151,6 +151,4 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
     return statusReport.toString();
   }
-
-
 }

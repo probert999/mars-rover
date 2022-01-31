@@ -1,6 +1,5 @@
 package com.probert999.marsrover.model;
 
-import java.nio.file.AccessDeniedException;
 import java.text.MessageFormat;
 
 public abstract class Rover implements Navigator {
@@ -49,7 +48,7 @@ public abstract class Rover implements Navigator {
       case WEST -> newXPosition--;
     }
 
-    if (plateau.isValidCoordinate(newXPosition, newYPosition)) {
+    if (plateau.isValidCoordinate(roverId, newXPosition, newYPosition)) {
       boolean updateSuccess = plateau.storeRoverPosition(roverId, newXPosition, newYPosition, currentHeading.getHeadingInitial());
       if (!updateSuccess)
       {

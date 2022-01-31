@@ -13,10 +13,10 @@ import java.util.List;
 public class QuadPlateauMap implements PlateauMapInterface {
 
   private BufferedImage roverImage = null;
-    private BufferedImage roverImageN = null;
-    private BufferedImage roverImageE = null;
-    private BufferedImage roverImageS = null;
-    private BufferedImage roverImageW = null;
+  private BufferedImage roverImageN = null;
+  private BufferedImage roverImageE = null;
+  private BufferedImage roverImageS = null;
+  private BufferedImage roverImageW = null;
   private BufferedImage gridImage = null;
   private final JFrame mapFrame;
   private List<RoverDetails> rovers = null;
@@ -31,9 +31,9 @@ public class QuadPlateauMap implements PlateauMapInterface {
     try {
       roverImage = ImageIO.read(new File("img\\rover.png"));
       roverImageN = ImageIO.read(new File("img\\rover-n.png"));
-        roverImageE = ImageIO.read(new File("img\\rover-e.png"));
-        roverImageS = ImageIO.read(new File("img\\rover-s.png"));
-        roverImageW = ImageIO.read(new File("img\\rover-w.png"));
+      roverImageE = ImageIO.read(new File("img\\rover-e.png"));
+      roverImageS = ImageIO.read(new File("img\\rover-s.png"));
+      roverImageW = ImageIO.read(new File("img\\rover-w.png"));
       roverImageHeight = roverImage.getHeight();
       roverImageWidth = roverImage.getWidth();
 
@@ -107,7 +107,6 @@ public class QuadPlateauMap implements PlateauMapInterface {
       }
     }
 
-
       protected void paintComponent(Graphics g) {
           g.setFont(gridFont);
           drawGrid(g);
@@ -128,11 +127,13 @@ public class QuadPlateauMap implements PlateauMapInterface {
                                   + (yGridSize / 2) + yGridOffset - (roverImageHeight / 2);
               } else {
                   gridXPosition = (int)
-                                  ((((double) MAP_SIZE - (double) roverImageWidth) / (double) xMaximum)
-                                          * (double) roverXPosition) + imageOffset;
+                                  ((((double) MAP_SIZE - (double) roverImageWidth)
+                                          / (double) xMaximum) * (double) roverXPosition)
+                                    + xGridOffset;
                   gridYPosition = (int)
-                                  ((((double) MAP_SIZE - (double) roverImageHeight) / (double) yMaximum)
-                                          * (double) roverYPosition) + imageOffset;
+                                  ((double)(MAP_SIZE - roverImageHeight) -
+                                  ((double)(MAP_SIZE - roverImageHeight) / (double)yMaximum) * (double) roverYPosition)
+                                   + yGridOffset;
               }
 
               switch (rover.getHeading())
@@ -142,10 +143,10 @@ public class QuadPlateauMap implements PlateauMapInterface {
                   case 'S' -> roverImage = roverImageS;
                   case 'W' -> roverImage = roverImageW;
               }
-              System.out.println("Heading: " + rover.getHeading());
               g.drawImage(roverImage, gridXPosition, gridYPosition, this);
               String roverDesc = rover.getRoverName();
-              g.drawString(roverDesc, gridXPosition - (roverDesc.length()), gridYPosition+roverImageHeight + 15);
+              int nameOffset = (g.getFontMetrics().stringWidth(roverDesc) - roverImageWidth) / 2;
+              g.drawString(roverDesc, gridXPosition - nameOffset, gridYPosition+roverImageHeight + 15);
           }
       }
 

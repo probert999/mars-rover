@@ -6,7 +6,7 @@ public class QuadPlateauStub extends Plateau {
 
     boolean mapVisible = false;
     @Override
-    public boolean isValidCoordinate(int xCoordinate, int yCoordinate) {
+    public boolean isValidCoordinate(String roverId, int xCoordinate, int yCoordinate) {
         return (xCoordinate >=0 && yCoordinate >= 0) && (xCoordinate <= 5 && yCoordinate <= 5);
     }
 

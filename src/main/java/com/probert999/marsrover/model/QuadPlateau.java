@@ -32,17 +32,17 @@ public class QuadPlateau extends Plateau {
     }
   }
 
-  public boolean isValidCoordinate(int xCoordinate, int yCoordinate) {
+  public boolean isValidCoordinate(String roverId, int xCoordinate, int yCoordinate) {
     boolean validCoordinate =
         ((xCoordinate >= 0 && xCoordinate <= xMaximum)
             && (yCoordinate >= 0 && yCoordinate <= yMaximum));
 
     RoverDetails checkRovers = null;
     if (validCoordinate) {
-      // check not space is not already occupied
+      // check not space is not already by occupied by another rover
       checkRovers =
           rovers.stream()
-              .filter(r -> r.getXPosition() == xCoordinate && r.getYPosition() == yCoordinate)
+              .filter(r -> r.getXPosition() == xCoordinate && r.getYPosition() == yCoordinate && roverId != r.getRoverName())
               .findFirst()
               .orElse(null);
     }
