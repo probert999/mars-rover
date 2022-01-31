@@ -34,5 +34,6 @@ public class RoverDetails {
   {
     this.xPosition = xPosition;
     this.yPosition = yPosition;
+    this.heading = heading;
   }
 }

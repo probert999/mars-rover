@@ -189,7 +189,7 @@ public class NASACapcomTest {
     capcom.processInstruction("5 5");
     capcom.processInstruction("0 0 N");
 
-    assertEquals("0 0 N",capcom.getStatusReport());
+    assertEquals("ROVER-1 at 0 0 N on PLATEAU-1",capcom.getStatusReport());
   }
 
   @Test
@@ -200,9 +200,8 @@ public class NASACapcomTest {
     capcom.processInstruction("5 5");
     capcom.processInstruction("0 0 N");
     capcom.processInstruction("1 2 E");
-    capcom.processInstruction("3 4 S");
 
-    assertEquals("0 0 N\n1 2 E\n3 4 S",capcom.getStatusReport());
+    assertEquals("ROVER-1 at 0 0 N on PLATEAU-1\nROVER-2 at 1 2 E on PLATEAU-1",capcom.getStatusReport());
   }
 
   @Test
@@ -245,7 +244,7 @@ public class NASACapcomTest {
     capcom.processInstruction("SWITCH PLATEAU-1");
     capcom.processInstruction("3 4 S");
 
-    assertEquals("3 4 S",capcom.getStatusReport());
+    assertEquals("ROVER-1 at 3 4 S on PLATEAU-1",capcom.getStatusReport());
   }
 
   @Test

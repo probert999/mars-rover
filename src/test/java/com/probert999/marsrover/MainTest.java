@@ -19,7 +19,7 @@ public class MainTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
 
-        assertEquals("1 3 N",  Main.start(capcom, in,args));
+        assertEquals("ROVER-1 at 1 3 N on PLATEAU-1",  Main.start(capcom, in,args));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class MainTest {
         NASACapcomService capcom = new NASACapcomService();
         String[] args = {"testdata\\shouldTakeFileInputTest.txt"};
         InputStream in = System.in;
-        assertEquals("1 3 N",  Main.start(capcom, in,args));
+        assertEquals("ROVER-1 at 1 3 N on PLATEAU-1",  Main.start(capcom, in,args));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class MainTest {
         NASACapcomService capcom = new NASACapcomService();
         String[] args = {"testdata\\shouldHandleInvalidCommandInFile.txt"};
         InputStream in = System.in;
-        assertEquals("1 3 N",  Main.start(capcom,in,args));
+        assertEquals("ROVER-1 at 1 3 N on PLATEAU-1",  Main.start(capcom,in,args));
     }
 
 

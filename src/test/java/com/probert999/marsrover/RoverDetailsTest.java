@@ -10,12 +10,13 @@ public class RoverDetailsTest {
     private String roverName = "ROVER-TEST";
     private int xPosition = 100;
     private int yPosition = 200;
+    private char heading = 'N';
     private RoverDetails testRover;
 
     @BeforeEach
     public void setup()
     {
-       testRover = new RoverDetails(roverName, xPosition, yPosition, 'N');
+       testRover = new RoverDetails(roverName, xPosition, yPosition, heading);
     }
 
     @Test
@@ -36,6 +37,14 @@ public class RoverDetailsTest {
     @Test
     public void shouldBeAbleToCreateRoverDetailsAndGetCorrectHeading(){
         assertEquals('N', testRover.getHeading());
+    }
+
+    @Test
+    public void shouldBeAbleToUpdateThePositionAndHeading(){
+        testRover.updatePosition(50, 51, 'S');
+        assertEquals(50, testRover.getXPosition());
+        assertEquals(51, testRover.getYPosition());
+        assertEquals('S', testRover.getHeading());
     }
 
 }

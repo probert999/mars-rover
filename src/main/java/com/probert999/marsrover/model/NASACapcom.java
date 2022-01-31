@@ -15,13 +15,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
     return Arrays.stream(instruction.split(" ")).toList();
   }
 
-  protected Rover getRoverById(String roverId)
-  {
+  protected Rover getRoverById(String roverId) {
     return roverMap.get(roverId);
   }
 
-  protected Plateau getPlateauById(String plateuaId)
-  {
+  protected Plateau getPlateauById(String plateuaId) {
     return plateauMap.get(plateuaId);
   }
 
@@ -52,11 +50,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
 
   public String processInstruction(String instruction) {
     String outcomeMessage = "Processed instruction";
+    boolean mapRefresh = false;
+    boolean showMap = false;
 
     InstructionTypeEnum instructionType = InstructionTypeEnum.getInstructionType(instruction);
 
-    boolean mapRefresh = false;
-    boolean showMap = false;
     List<String> parameters = getParametersFromInstruction(instruction);
 
     switch (instructionType) {
@@ -147,7 +145,8 @@ public abstract class NASACapcom implements NASACapcomInterface {
     List<Map.Entry<String, Rover>> rovers = roverMap.entrySet().stream().toList();
 
     for (Map.Entry<String, Rover> rover : rovers) {
-     statusReport.add(rover.getValue().getLocation());
+     statusReport.add(MessageFormat.format("{0} at {1} on {2}",
+                        rover.getKey(), rover.getValue().getLocation(), rover.getValue().getPlateau().getId()));
     }
 
     return statusReport.toString();

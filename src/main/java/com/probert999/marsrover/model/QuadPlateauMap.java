@@ -2,15 +2,21 @@ package com.probert999.marsrover.model;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
 public class QuadPlateauMap implements PlateauMapInterface {
 
   private BufferedImage roverImage = null;
+    private BufferedImage roverImageN = null;
+    private BufferedImage roverImageE = null;
+    private BufferedImage roverImageS = null;
+    private BufferedImage roverImageW = null;
   private BufferedImage gridImage = null;
   private final JFrame mapFrame;
   private List<RoverDetails> rovers = null;
@@ -24,6 +30,10 @@ public class QuadPlateauMap implements PlateauMapInterface {
 
     try {
       roverImage = ImageIO.read(new File("img\\rover.png"));
+      roverImageN = ImageIO.read(new File("img\\rover-n.png"));
+        roverImageE = ImageIO.read(new File("img\\rover-e.png"));
+        roverImageS = ImageIO.read(new File("img\\rover-s.png"));
+        roverImageW = ImageIO.read(new File("img\\rover-w.png"));
       roverImageHeight = roverImage.getHeight();
       roverImageWidth = roverImage.getWidth();
 
@@ -53,6 +63,7 @@ public class QuadPlateauMap implements PlateauMapInterface {
   public void show(List<RoverDetails> listOfRovers) {
     mapFrame.setVisible(true);
     this.rovers = listOfRovers;
+    gridMap.removeAll();
     gridMap.revalidate();
     gridMap.repaint();
     gridMap.transferFocusBackward();
@@ -96,6 +107,7 @@ public class QuadPlateauMap implements PlateauMapInterface {
       }
     }
 
+
       protected void paintComponent(Graphics g) {
           g.setFont(gridFont);
           drawGrid(g);
@@ -123,10 +135,17 @@ public class QuadPlateauMap implements PlateauMapInterface {
                                           * (double) roverYPosition) + imageOffset;
               }
 
+              switch (rover.getHeading())
+              {
+                  case 'N' -> roverImage = roverImageN;
+                  case 'E' -> roverImage = roverImageE;
+                  case 'S' -> roverImage = roverImageS;
+                  case 'W' -> roverImage = roverImageW;
+              }
+              System.out.println("Heading: " + rover.getHeading());
               g.drawImage(roverImage, gridXPosition, gridYPosition, this);
               String roverDesc = rover.getRoverName();
-              g.drawString(rover.getRoverName(),
-                      gridXPosition - (roverDesc.length()), gridYPosition+roverImageHeight + 15);
+              g.drawString(roverDesc, gridXPosition - (roverDesc.length()), gridYPosition+roverImageHeight + 15);
           }
       }
 

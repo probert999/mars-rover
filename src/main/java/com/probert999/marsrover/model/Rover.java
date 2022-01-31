@@ -30,6 +30,7 @@ public abstract class Rover implements Navigator {
       throw new IllegalStateException("Only owning Capcom can request spin");
     }
     currentHeading = currentHeading.getNewHeading(spinDirection);
+    plateau.storeRoverPosition(roverId, xPosition, yPosition, currentHeading.getHeadingInitial());
   }
 
   public void move(NASACapcom callingCapcom)  {

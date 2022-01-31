@@ -20,17 +20,27 @@ public abstract class Plateau implements PlateauInterface {
   public boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate, char heading) {
     boolean updateSuccess = false;
 
-    if (isValidCoordinate(xCoordinate, yCoordinate)) {
-      RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName() == roverId).findFirst().orElse(null);
-
-      if (findRover == null) {
+    RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName() == roverId).findFirst().orElse(null);
+    if (findRover == null) {
+      if (isValidCoordinate(xCoordinate, yCoordinate)) {
         RoverDetails newRover = new RoverDetails(roverId, xCoordinate, yCoordinate, heading);
         rovers.add(newRover);
-      } else {
-        findRover.updatePosition(xCoordinate, yCoordinate, heading);
+        updateSuccess = true;
       }
-      updateSuccess = true;
+    } else {
+      if (findRover.getXPosition() != xCoordinate && findRover.getYPosition() != yCoordinate) {
+        // Rover moving to new space
+        if (isValidCoordinate(xCoordinate, yCoordinate)) {
+          findRover.updatePosition(xCoordinate, yCoordinate, heading);
+          updateSuccess = true;
+        }
+      } else {
+        // Just an update to the heading
+        findRover.updatePosition(xCoordinate, yCoordinate, heading);
+        updateSuccess = true;
+      }
     }
+
     return updateSuccess;
   };
 
