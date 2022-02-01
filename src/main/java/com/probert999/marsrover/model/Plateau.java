@@ -20,9 +20,9 @@ public abstract class Plateau implements PlateauInterface {
   public boolean storeRoverPosition(String roverId, int xCoordinate, int yCoordinate, char heading) {
     boolean updateSuccess = false;
 
-    RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName() == roverId).findFirst().orElse(null);
+    RoverDetails findRover = rovers.stream().filter(r -> r.getRoverName().equals(roverId)).findFirst().orElse(null);
     if (findRover == null) {
-      if (isValidCoordinate(null, xCoordinate, yCoordinate)) {
+      if (isValidCoordinate(roverId, xCoordinate, yCoordinate)) {
         RoverDetails newRover = new RoverDetails(roverId, xCoordinate, yCoordinate, heading);
         rovers.add(newRover);
         updateSuccess = true;
@@ -34,7 +34,7 @@ public abstract class Plateau implements PlateauInterface {
       }
     }
     return updateSuccess;
-  };
+  }
 
   abstract public void showMap();
 

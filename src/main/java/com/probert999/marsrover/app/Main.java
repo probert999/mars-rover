@@ -2,7 +2,6 @@ package com.probert999.marsrover.app;
 
 import com.probert999.marsrover.service.NASACapcomService;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -75,7 +74,7 @@ public class Main {
             capcom.finish();
             processing = false;
           }
-          default ->  {System.out.println(capcom.processInstruction(instruction));}
+          default ->  System.out.println(capcom.processInstruction(instruction));
         }
 
       } catch (Exception e)  {

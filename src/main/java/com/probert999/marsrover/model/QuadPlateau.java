@@ -42,7 +42,7 @@ public class QuadPlateau extends Plateau {
       // check not space is not already by occupied by another rover
       checkRovers =
           rovers.stream()
-              .filter(r -> r.getXPosition() == xCoordinate && r.getYPosition() == yCoordinate && roverId != r.getRoverName())
+              .filter(r -> r.getXPosition() == xCoordinate && r.getYPosition() == yCoordinate && !roverId.equals(r.getRoverName()))
               .findFirst()
               .orElse(null);
     }

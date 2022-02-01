@@ -61,18 +61,17 @@ public class QuadPlateauMap implements PlateauMapInterface {
   public void show(List<RoverDetails> listOfRovers) {
     mapFrame.setVisible(true);
     this.rovers = listOfRovers;
-    gridMap.removeAll();
     gridMap.revalidate();
     gridMap.repaint();
     gridMap.transferFocusBackward();
   }
 
   public void hide(boolean finish) {
-      if (finish) {
-          mapFrame.dispose();
-      } else {
-      mapFrame.setVisible(false);
-      }
+    if (finish) {
+        mapFrame.dispose();
+    } else {
+        mapFrame.setVisible(false);
+    }
   }
 
   private class GridMap extends JComponent {
@@ -118,19 +117,20 @@ public class QuadPlateauMap implements PlateauMapInterface {
               int roverXPosition = rover.getXPosition();
               int roverYPosition = rover.getYPosition();
               if (drawGrid) {
+                  // Calculate position in centre of grid
                   gridXPosition = (xGridSize * (roverXPosition + 1))
                                   - (xGridSize / 2) + xGridOffset - (roverImageWidth / 2);
 
                   gridYPosition = (yGridSize * (yMaximum - roverYPosition))
                                   + (yGridSize / 2) + yGridOffset - (roverImageHeight / 2);
               } else {
+                  // No grid shown, use map size to calculate position
                   gridXPosition = (int)
-                                  ((((double) MAP_SIZE - (double) roverImageWidth)
-                                          / (double) xMaximum) * (double) roverXPosition)
+                                  ((((double)MAP_SIZE - (double)roverImageWidth) / (double)xMaximum)*(double)roverXPosition)
                                     + xGridOffset;
                   gridYPosition = (int)
-                                  ((double)(MAP_SIZE - roverImageHeight) -
-                                  ((double)(MAP_SIZE - roverImageHeight) / (double)yMaximum) * (double) roverYPosition)
+                                  ((double)(MAP_SIZE -roverImageHeight) -
+                                  ((double)(MAP_SIZE -roverImageHeight) / (double)yMaximum) * (double)roverYPosition)
                                    + yGridOffset;
               }
 
@@ -155,12 +155,12 @@ public class QuadPlateauMap implements PlateauMapInterface {
           Graphics2D g2d = (Graphics2D) g;
           if (drawGrid) {
               g2d.setColor(Color.RED);
-              for (int x = 0; x <= xMaximum; x ++)
-                  for (int y = 0; y <= yMaximum; y ++)
+              for (int x=0; x <=xMaximum; x++)
+                  for (int y=0; y <=yMaximum; y++)
                       g.drawRect((x * xGridSize) + xGridOffset, (y*yGridSize) + yGridOffset, xGridSize, yGridSize);
           }
 
-          // Display grid co-ordinates
+          // Display grid corner co-ordinates
           g.setColor(Color.BLACK);
           g.drawString("0,0", imageOffset, MAP_SIZE + imageOffset + 15);
           g.drawString(xMaximum + ",0", MAP_SIZE - imageOffset, MAP_SIZE + imageOffset +  15);
