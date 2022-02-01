@@ -339,5 +339,15 @@ public class NASACapcomTest {
     assertEquals("PLATEAU-1 (5,5) Map visible: true", capcom.getPlateauList());
   }
 
+  @Test
+  public void shouldSwitchToRoverPlateauOnMove()
+  {
+    NASACapcomService capcom = new NASACapcomService();
+    capcom.processInstruction("5 5");
+    capcom.processInstruction("3 4 S");
+    capcom.processInstruction("10 10");
+
+    assertEquals("Switched to PLATEAU-1", capcom.processInstruction("M"));
+  }
 
 }

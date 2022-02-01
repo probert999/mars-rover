@@ -42,7 +42,7 @@ A single command can contain multiple move and spin instructions, e.g. <i>LLMMMR
 <tr><td><i>LIST ROVERS</i></td><td>display a list of all rovers and their location</td></tr>
 <tr><td><i>SHOW MAP</i></td><td>show map for the current plateau (if map feature available)</td></tr>
 <tr><td><i>HIDE MAP</i></td><td>hide map for the current plateau</td></tr>
-<tr><td><i>FINISH</i></td><td>exists the console application</td></tr>
+<tr><td><i>FINISH</i></td><td>exits the console application</td></tr>
 <tr><td><i>HELP</i></td><td>displays the help text</td></tr>
 </table>
 </blockquote>

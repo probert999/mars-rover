@@ -98,12 +98,18 @@ public abstract class NASACapcom implements NASACapcomInterface {
         else {
           outcomeMessage = MessageFormat.format("{0} not found", roverName);
         }
+        mapRefresh = true;
       }
 
       case MOVE_ROVER -> {
         if (currentRover == null)
           throw new IllegalStateException("Invalid instruction received: No Rovers exist");
 
+        Plateau roverPlateau = currentRover.getPlateau();
+        if (currentPlateau != roverPlateau) {
+          currentPlateau = roverPlateau;
+          outcomeMessage = MessageFormat.format("Switched to {0}", roverPlateau.getId());
+        }
         processMoveSequence(instruction);
         mapRefresh = true;
       }
