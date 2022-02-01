@@ -1,6 +1,10 @@
 @startuml
 skinparam classAttributeIconSize 0
-
+together {
+class Heading
+class Direction
+class InstructionType
+}
 interface Navigator {
     + getLocation() : String
     + spin(callingCapcom : NASACapcom, heading : SpinDirection) : void
@@ -20,7 +24,7 @@ abstract class Rover extends Navigator  {
 }
 
 class SurfaceRover implements Rover  {
-    + SurfaceRover(capcom : NASACapcom, roverId : plateau : Plateau, String, xCoordinate : int, yCoordinate : int, heading : Heading)
+    + SurfaceRover(capcom : NASACapcom, roverId : String, plateau : Plateau,\nxCoordinate : int, yCoordinate : int, heading : Heading)
 }
 
 interface PlateauInterface  {
@@ -127,15 +131,13 @@ class RoverDetails {
   + updatePosition(roverName : String, xPosition : int, yPosition : int, heading:char)
 }
 
-NASACapcomService -- Plateau
+Plateau -- NASACapcomService
 Rover -- NASACapcomService
 Rover -- Plateau
 Plateau -- RoverDetails
 RoverDetails -- QuadPlateauMap
 QuadPlateau -- QuadPlateauMap
 
-Heading -[Hidden] Navigator
-Heading -[hidden] Direction
-Heading -[hidden]d-> InstructionType
-
+PlateauInterface -[hidden]d- Plateau
+Heading -[hidden]> Navigator
 @enduml
