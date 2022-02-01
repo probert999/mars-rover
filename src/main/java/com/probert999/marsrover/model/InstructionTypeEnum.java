@@ -10,10 +10,10 @@ public enum InstructionTypeEnum {
   HIDE_MAP("HIDE MAP"),
   INVALID_INSTRUCTION("Invalid Instruction");
 
-  private final String instructionText;
+  private final String instructionRegex;
 
-  InstructionTypeEnum(String instructionText) {
-    this.instructionText = instructionText;
+  InstructionTypeEnum(String instructionRegex) {
+    this.instructionRegex = instructionRegex;
   }
 
   public static InstructionTypeEnum getInstructionType(String instruction) {
@@ -21,7 +21,7 @@ public enum InstructionTypeEnum {
     InstructionTypeEnum instructionType = INVALID_INSTRUCTION;
 
     for (InstructionTypeEnum checkInstruction : InstructionTypeEnum.values()) {
-      if (instruction.matches(checkInstruction.instructionText)) {
+      if (instruction.matches(checkInstruction.instructionRegex)) {
         instructionType = checkInstruction;
         break;
       }
