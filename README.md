@@ -4,6 +4,29 @@ Mars Rover kata using UML, TDD, Java
 ### Design
 [UML Class Diagram](https://github.com/probert999/mars-rover/blob/main/uml/MarsRoverClassDiagram.png)
 
+#### Capcom
+<li>Takes input and processes commands. 
+<li>Creates and manages plateaus
+<li>Creates and manages rovers
+<li>Produces status reports.
+
+#### Plateau
+<li>Handles coordinate validation requests from rovers
+<li>Receives and stores position data for rovers on the plateau to ensure no crashes!
+<li>Handles map (if enabled)
+
+#### Rover
+<li>Receives and executes move and spin commands
+
+<br>The interactions between the components can be seen the in 
+[Sequence Diagram](https://github.com/probert999/mars-rover/blob/main/uml/MarsRoverSequenceDiagram.png)
+showing the set-up and processing of a move instruction
+
+
+### Running the application
+The main method handles console input or a file contain instructions be passed as a parameter.
+
+<br>Example instruction files are available in the testdata folder.
 
 ### Commands to explore Mars
 All rovers need a plateau to land on, currently only quadrilateral shaped plateaus are supported.
@@ -56,15 +79,10 @@ On receipt of a move command the rover calculates its new coordinates and valida
 
 The plateau check the coordinates are within bounds and the position of any other rovers. Two rovers cannot share the same coordinates
 
-[Sequence Diagram](https://github.com/probert999/mars-rover/blob/main/uml/MarsRoverSequenceDiagram.png)
- 
-### Running the application
-The application can run using manual input from the command line or a file containing instructions can be passed as a parameter.
-
-Example instruction files are available in the testdata folder.
-
 
 ### Future enhancements
 <li>Different shaped plateaus
-<li>Flying Rover
+<li>Flying rover
+<li>Obstacles on the plateau
+<li>Disable rover
 <li>Additional Capcoms
