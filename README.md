@@ -1,14 +1,20 @@
 # Mars Rover kata
 Mars Rover kata using UML, TDD, Java
 
+### Overview
+Program to move rovers the surface of Mars, which is represented by a number of plateaus, divided into a grid.
+<p>Rovers can land on a plateau at specified grid coordinates with a compass heading set and then receive commands 
+to move to the next grid space or spin left or right to face another direction.
+Multiple rovers can be placed on the same plateau. 
+
 ### Design
 [UML Class Diagram](https://github.com/probert999/mars-rover/blob/main/uml/MarsRoverClassDiagram.png)
 
 #### Capcom
-<li>Takes input and processes commands. 
+<li>Takes input and processes commands 
 <li>Creates and manages plateaus
 <li>Creates and manages rovers
-<li>Produces status reports.
+<li>Produces status reports
 
 #### Plateau
 <li>Handles coordinate validation requests from rovers
@@ -77,7 +83,7 @@ Rovers cannot land on or move to the space as another Rover on the same plateau.
 
 On receipt of a move command the rover calculates its new coordinates and validates the move with the plateau.
 
-The plateau check the coordinates are within bounds and the position of any other rovers. Two rovers cannot share the same coordinates
+The plateau checks the coordinates are within bounds and the current position of any other rovers. Two rovers cannot share the same coordinates
 
 
 ### Future enhancements
