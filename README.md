@@ -29,10 +29,22 @@ Multiple rovers can be placed on the same plateau.
 showing the set-up and processing of a move instruction
 
 
-### Running the application
-The main method handles console input or a file contain instructions be passed as a parameter.
+### Building and Running the application
+Once cloned, the application can be built using the following Maven command:
 
-<br>Example instruction files are available in the testdata folder.
+><i>mvn compile package</i>
+
+The unit tests will be executed as part of the build process which produces a jar file in the tagret directory.
+
+<br>To run the application, from the command line, enter:
+
+><i>java -jar target\\mars-rover-1.0-SNAPSHOT.jar</i>
+
+The main method handles console input or the name of file containing instructions be passed as a parameter, e.g.:
+
+><i>java -jar target\\mars-rover-1.0-SNAPSHOT.jar testdata\\instructions.txt"</i>
+
+Example instruction files are available in the testdata folder.
 
 ### Commands to explore Mars
 All rovers need a plateau to land on, currently only quadrilateral shaped plateaus are supported.
@@ -84,6 +96,10 @@ Rovers cannot land on or move to the space as another Rover on the same plateau.
 On receipt of a move command the rover calculates its new coordinates and validates the move with the plateau.
 
 The plateau checks the coordinates are within bounds and the current position of any other rovers. Two rovers cannot share the same coordinates
+
+### Screenshot
+![](img/screenshot.png?raw=true)
+
 
 
 ### Future enhancements
