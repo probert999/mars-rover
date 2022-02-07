@@ -2,7 +2,7 @@
 Mars Rover kata using UML, TDD, Java
 
 ### Overview
-Program to move rovers the surface of Mars, which is represented by a number of plateaus, divided into a grid.
+Program to move rovers around the surface of Mars, which is represented by a number of plateaus, divided into a grid.
 <p>Rovers can land on a plateau at specified grid coordinates with a compass heading set and then receive commands 
 to move to the next grid space or spin left or right to face another direction.
 Multiple rovers can be placed on the same plateau. 

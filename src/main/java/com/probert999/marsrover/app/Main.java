@@ -22,14 +22,13 @@ public class Main {
 
     System.out.println("\n******** NASA Capcom for Mars Rover ********\n");
 
-    showHelp();
-
     Scanner in;
     String statusReport = null;
 
     if (args.length == 0)
     {
       // process console
+      showHelp();
       in = new Scanner(ins);
       statusReport = processLoop(capcom, in, false);
     }
@@ -43,10 +42,12 @@ public class Main {
         in.close();
       }
       catch (Exception e)  {
-        System.out.println("File not found: " + args[0]);
+        System.out.println("\nFile not found: " + args[0]);
       }
     }
-    System.out.println("\n**** Final Status Report ****\n" + statusReport);
+    if (statusReport != null)
+      System.out.println("\n**** Final Status Report ****\n" + statusReport);
+
     return statusReport;
   }
 
