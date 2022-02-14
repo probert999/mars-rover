@@ -38,13 +38,16 @@ The unit tests will be executed as part of the build process which produces a ja
 
 <br>To run the application, from the command line, enter:
 
-><i>java -jar target\\mars-rover-1.0-SNAPSHOT.jar</i>
+><i>java -jar target/mars-rover-1.0-SNAPSHOT.jar</i>
 
 The main method handles console input or the name of file containing instructions be passed as a parameter, e.g.:
 
-><i>java -jar target\\mars-rover-1.0-SNAPSHOT.jar testdata\\instructions.txt"</i>
+><i>java -jar target/mars-rover-1.0-SNAPSHOT.jar instructions.txt</i>
 
-Example instruction files are available in the testdata folder.
+Example instruction files in the testdata folder can also be used, e.g.:
+
+><i>java -jar target/mars-rover-1.0-SNAPSHOT.jar src/test/resources/instructions.txt</i>
+
 
 ### Commands to explore Mars
 All rovers need a plateau to land on, currently only quadrilateral shaped plateaus are supported.
@@ -98,7 +101,7 @@ On receipt of a move command the rover calculates its new coordinates and valida
 The plateau checks the coordinates are within bounds and the current position of any other rovers. Two rovers cannot share the same coordinates
 
 ### Screenshot
-![](img/screenshot.png?raw=true)
+![Screenshot](src/main/resources/img/screenshot.png?raw=true)
 
 
 

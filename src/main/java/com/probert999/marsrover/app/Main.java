@@ -4,6 +4,7 @@ import com.probert999.marsrover.service.NASACapcomService;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +13,8 @@ public class Main {
   private static final String CMD_HELP = "HELP";
   private static final String CMD_PLATEAU_LIST = "LIST PLATEAUS";
   private static final String CMD_ROVER_LIST = "LIST ROVERS";
-  private static final String HELP_FILE = "help\\helptext.txt";
+  private static final String HELP_FILE = "/help/helptext.txt";
+
   public static void main(String[] args) {
     NASACapcomService capcom = new NASACapcomService();
     start(capcom, System.in, args);
@@ -45,7 +47,7 @@ public class Main {
         System.out.println("\nFile not found: " + args[0]);
       }
     }
-    if (statusReport != null)
+    if (statusReport != null && !statusReport.isEmpty())
       System.out.println("\n**** Final Status Report ****\n" + statusReport);
 
     return statusReport;
@@ -78,19 +80,22 @@ public class Main {
           default ->  System.out.println(capcom.processInstruction(instruction));
         }
 
+      } catch (NoSuchElementException eof)  {
+        System.out.println("End of file detected, invoking finish command");
+        processing = false;
       } catch (Exception e)  {
         System.out.println(e.getMessage());
       }
+
     }
     return capcom.getStatusReport();
   }
 
   private static void showHelp()
   {
-    File file = new File(HELP_FILE);
-
     try {
-      Scanner in = new Scanner(file);
+      InputStream is = Main.class.getResourceAsStream(HELP_FILE);
+      Scanner in = new Scanner(is);
       while (in.hasNext())
       {
         System.out.println(in.nextLine());

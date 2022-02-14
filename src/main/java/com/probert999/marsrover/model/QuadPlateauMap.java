@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,15 +26,16 @@ public class QuadPlateauMap implements PlateauMapInterface {
   public QuadPlateauMap(String name, int xMaximum, int yMaximum) {
 
     try {
-      roverImage = ImageIO.read(new File("img\\rover.png"));
-      roverImageN = ImageIO.read(new File("img\\rover-n.png"));
-      roverImageE = ImageIO.read(new File("img\\rover-e.png"));
-      roverImageS = ImageIO.read(new File("img\\rover-s.png"));
-      roverImageW = ImageIO.read(new File("img\\rover-w.png"));
+      roverImage = ImageIO.read(QuadPlateauMap.class.getResource("/img/rover.png"));
+      roverImageN = ImageIO.read(QuadPlateauMap.class.getResource("/img/rover-n.png"));
+      roverImageE = ImageIO.read(QuadPlateauMap.class.getResource("/img/rover-e.png"));
+      roverImageS = ImageIO.read(QuadPlateauMap.class.getResource("/img/rover-s.png"));
+      roverImageW = ImageIO.read(QuadPlateauMap.class.getResource("/img/rover-w.png"));
       roverImageHeight = roverImage.getHeight();
       roverImageWidth = roverImage.getWidth();
 
-      gridImage = ImageIO.read(new File("img\\mars.png"));
+      gridImage = ImageIO.read(QuadPlateauMap.class.getResource("/img/mars.png"));
+
     } catch (IOException e) {
       System.out.println("Image files not found");
     }
