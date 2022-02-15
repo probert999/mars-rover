@@ -34,7 +34,7 @@ Once cloned, the application can be built using the following Maven command:
 
 ><i>mvn compile package</i>
 
-The unit tests will be executed as part of the build process which produces a jar file in the tagret directory.
+The unit tests will be executed as part of the build process which produces a jar file in the target directory.
 
 <br>To run the application, from the command line, enter:
 
