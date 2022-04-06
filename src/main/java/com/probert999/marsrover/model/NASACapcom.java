@@ -154,12 +154,11 @@ public abstract class NASACapcom implements NASACapcomInterface {
 }
   public String getStatusReport() {
     StringJoiner statusReport = new StringJoiner("\n");
-    List<Map.Entry<String, Rover>> rovers = roverMap.entrySet().stream().toList();
 
-    for (Map.Entry<String, Rover> rover : rovers) {
-     statusReport.add(MessageFormat.format("{0} at {1} on {2}",
-                        rover.getKey(), rover.getValue().getLocation(), rover.getValue().getPlateau().getId()));
-    }
+    roverMap
+            .entrySet().stream()
+            .forEach(r -> statusReport.add(MessageFormat.format("{0} at {1} on {2}",
+                          r.getKey(), r.getValue().getLocation(), r.getValue().getPlateau().getId())));
 
     return statusReport.toString();
   }
